@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+
+  body {
+    @apply font-body text-gray-800 bg-white antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  ::selection {
+    @apply bg-brazil-green text-white;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-4
+           bg-brazil-yellow text-brazil-dark font-bold text-lg
+           rounded-full shadow-lg
+           transition-all duration-300 ease-out
+           hover:scale-105 hover:shadow-xl hover:bg-brazil-gold
+           active:scale-95
+           focus:outline-none focus:ring-4 focus:ring-brazil-yellow/50;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-8 py-4
+           border-2 border-white text-white font-bold text-lg
+           rounded-full
+           transition-all duration-300 ease-out
+           hover:bg-white hover:text-brazil-dark hover:scale-105
+           active:scale-95
+           focus:outline-none focus:ring-4 focus:ring-white/50;
+  }
+
+  .btn-whatsapp {
+    @apply inline-flex items-center gap-3 px-8 py-4
+           bg-green-500 text-white font-bold text-lg
+           rounded-full shadow-lg
+           transition-all duration-300 ease-out
+           hover:bg-green-600 hover:scale-105 hover:shadow-xl
+           active:scale-95;
+  }
+
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8 py-16 md:py-24;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 ease-out
+           hover:-translate-y-2 hover:shadow-2xl;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-brazil-green to-brazil-green-dark
+           bg-clip-text text-transparent;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #009C3B; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #006400; }
