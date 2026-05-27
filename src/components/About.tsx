@@ -1,3 +1,4 @@
+import { getAsset } from '../utils/assets'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Swords, Music, Users, Zap } from 'lucide-react'
@@ -85,7 +86,7 @@ export default function About() {
           >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?w=800&q=80"
+                src="https://images.pexels.com/photos/32418072/pexels-photo-32418072.jpeg?auto=compress&cs=tinysrgb&w=800"
                 alt="Игра в роде — капоэйра"
                 className="w-full h-[400px] md:h-[500px] object-cover"
                 loading="lazy"
@@ -99,7 +100,7 @@ export default function About() {
               transition={{ duration: 3, repeat: Infinity }}
               className="absolute -bottom-6 -left-6 md:-left-10 bg-white rounded-2xl shadow-xl p-3"
             >
-              <img src="/logo.png" alt="FGR" className="w-16 h-16 object-contain" />
+              <img src={getAsset("logo.png")} alt="FGR" className="w-16 h-16 object-contain" />
             </motion.div>
 
             <motion.div

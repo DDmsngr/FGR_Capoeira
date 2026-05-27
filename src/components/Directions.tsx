@@ -12,16 +12,24 @@ const iconMap = {
 } as const
 type IconName = keyof typeof iconMap
 
-// Подобранные тематические фото для верхнего баннера каждого направления
+// Все фото — тематические, реальная капоэйра / бразильская культура (Pexels, free)
 const directionImages: Record<string, string> = {
-  'Capoeira Angola':        'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=400&q=70',
-  'Capoeira Regional':      'https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?w=400&q=70',
-  'Capoeira Contemporânea': 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=400&q=70',
-  'Maculelê':               'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&q=70',
-  'Музыкальные занятия':    'https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=400&q=70',
-  'Акробатика':             'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=70',
-  'Португальский язык':     'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&q=70',
-  'Samba de Roda':          'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=400&q=70',
+  'Capoeira Angola':
+    'https://images.pexels.com/photos/37192940/pexels-photo-37192940.jpeg?auto=compress&cs=tinysrgb&w=400',
+  'Capoeira Regional':
+    'https://images.pexels.com/photos/31251238/pexels-photo-31251238.jpeg?auto=compress&cs=tinysrgb&w=400',
+  'Capoeira Contemporânea':
+    'https://images.pexels.com/photos/28975498/pexels-photo-28975498.jpeg?auto=compress&cs=tinysrgb&w=400',
+  'Maculelê':
+    'https://images.pexels.com/photos/26864611/pexels-photo-26864611.jpeg?auto=compress&cs=tinysrgb&w=400',
+  'Музыкальные занятия':
+    'https://images.pexels.com/photos/37192943/pexels-photo-37192943.jpeg?auto=compress&cs=tinysrgb&w=400',
+  'Акробатика':
+    'https://images.pexels.com/photos/32418072/pexels-photo-32418072.jpeg?auto=compress&cs=tinysrgb&w=400',
+  'Португальский язык':
+    'https://images.pexels.com/photos/30495349/pexels-photo-30495349.jpeg?auto=compress&cs=tinysrgb&w=400',
+  'Samba de Roda':
+    'https://images.pexels.com/photos/31251234/pexels-photo-31251234.jpeg?auto=compress&cs=tinysrgb&w=400',
 }
 
 export default function Directions() {
@@ -60,22 +68,18 @@ export default function Directions() {
                 transition={{ duration: 0.4, delay: i * 0.07 }}
                 className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 card-hover cursor-default"
               >
-                {/* Image strip */}
-                {imgSrc && (
-                  <div className="relative h-32 overflow-hidden">
-                    <img
-                      src={imgSrc}
-                      alt={dir.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                    {/* Icon overlay */}
-                    <div className="absolute bottom-3 left-3 w-9 h-9 bg-white/90 rounded-lg flex items-center justify-center">
-                      <Icon size={18} className="text-brazil-green" />
-                    </div>
+                <div className="relative h-36 overflow-hidden">
+                  <img
+                    src={imgSrc}
+                    alt={dir.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute bottom-3 left-3 w-9 h-9 bg-white/95 rounded-lg flex items-center justify-center shadow">
+                    <Icon size={18} className="text-brazil-green" />
                   </div>
-                )}
+                </div>
                 <div className="p-5">
                   <h3 className="font-heading font-bold text-base text-brazil-dark mb-1.5">{dir.title}</h3>
                   <p className="text-xs text-gray-500 leading-relaxed">{dir.description}</p>

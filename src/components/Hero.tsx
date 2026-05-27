@@ -2,21 +2,23 @@ import { motion } from 'framer-motion'
 import { ChevronDown, Play, CalendarCheck } from 'lucide-react'
 import { useState } from 'react'
 
+const logoUrl = new URL('/logo.png', import.meta.url).href
+
 export default function Hero() {
   const [showVideo, setShowVideo] = useState(false)
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background */}
       <div className="absolute inset-0">
+        {/* Реальное фото капоэйры — выступление в Порто Сегуро, Бразилия */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?w=1920&q=80')`,
+            backgroundImage: `url('https://images.pexels.com/photos/31251238/pexels-photo-31251238.jpeg?auto=compress&cs=tinysrgb&w=1920')`,
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/55 to-black/85" />
-        <div className="absolute inset-0 bg-gradient-to-r from-brazil-green/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/85" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brazil-green/25 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-brazil-green via-brazil-yellow to-brazil-green opacity-70" />
       </div>
 
@@ -29,7 +31,7 @@ export default function Hero() {
             style={{
               width: i % 2 === 0 ? 6 : 3,
               height: i % 2 === 0 ? 6 : 3,
-              backgroundColor: i % 3 === 0 ? 'rgba(255,223,0,0.4)' : 'rgba(0,156,59,0.35)',
+              backgroundColor: i % 3 === 0 ? 'rgba(255,223,0,0.45)' : 'rgba(0,156,59,0.35)',
               left: `${10 + i * 11}%`,
               top: `${20 + (i % 3) * 20}%`,
             }}
@@ -39,9 +41,8 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* Content */}
       <div className="relative z-10 container-custom px-4 sm:px-6 lg:px-8 text-center">
-        {/* Real logo */}
+        {/* Logo — BASE_URL aware */}
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -54,8 +55,8 @@ export default function Hero() {
             className="inline-block"
           >
             <img
-              src="/logo.png"
-              alt="Familia Ginga e Raça — логотип капоэйры"
+              src={logoUrl}
+              alt="Familia Ginga e Raça — логотип"
               className="w-28 h-28 md:w-40 md:h-40 mx-auto object-contain drop-shadow-2xl"
             />
           </motion.div>
@@ -105,7 +106,6 @@ export default function Hero() {
           </a>
         </motion.div>
 
-        {/* Video button */}
         <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -120,7 +120,6 @@ export default function Hero() {
         </motion.button>
       </div>
 
-      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -138,7 +137,6 @@ export default function Hero() {
         </motion.a>
       </motion.div>
 
-      {/* Video Modal */}
       {showVideo && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -147,17 +145,14 @@ export default function Hero() {
           onClick={() => setShowVideo(false)}
         >
           <div className="relative w-full max-w-4xl aspect-video bg-black rounded-2xl overflow-hidden">
-            <button
-              onClick={() => setShowVideo(false)}
-              className="absolute -top-12 right-0 text-white hover:text-brazil-yellow transition-colors text-sm font-medium"
-            >
+            <button onClick={() => setShowVideo(false)} className="absolute -top-12 right-0 text-white hover:text-brazil-yellow transition-colors text-sm font-medium">
               Закрыть ✕
             </button>
-            {/* Замените на реальный YouTube embed: <iframe src="https://www.youtube.com/embed/VIDEO_ID" ... /> */}
+            {/* Замените на: <iframe src="https://www.youtube.com/embed/VIDEO_ID" className="w-full h-full" allowFullScreen /> */}
             <div className="w-full h-full flex items-center justify-center text-white/40">
               <div className="text-center">
                 <Play size={64} className="mx-auto mb-4 opacity-30" />
-                <p className="text-sm">Вставьте ссылку на YouTube-видео в Hero.tsx</p>
+                <p className="text-sm">Вставьте YouTube embed в Hero.tsx</p>
               </div>
             </div>
           </div>

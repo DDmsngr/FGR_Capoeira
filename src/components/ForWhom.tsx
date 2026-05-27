@@ -10,7 +10,7 @@ const cards = [
     subtitle: '3–5 лет · 6–9 лет · 10–15 лет',
     description: 'Развитие координации, гибкости, дисциплины. Учимся работать в команде, преодолевать страхи, верить в себя. Яркие эмоции и настоящие друзья!',
     // Ребёнок делает мостик / акробатику
-    image: 'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=700&q=80',
+    image: 'https://images.pexels.com/photos/30495349/pexels-photo-30495349.jpeg?auto=compress&cs=tinysrgb&w=700',
     borderColor: 'border-brazil-yellow',
     cta: 'Записать ребёнка',
     ctaClass: 'bg-brazil-yellow text-brazil-dark hover:bg-brazil-gold',
@@ -22,7 +22,7 @@ const cards = [
     subtitle: 'Любой возраст и уровень подготовки',
     description: 'Необычный фитнес + боевое искусство + танец. Снимите стресс после работы, получите заряд энергии, научитесь владеть своим телом.',
     // Взрослые тренируются — бразильское боевое искусство
-    image: 'https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=700&q=80',
+    image: 'https://images.pexels.com/photos/28975498/pexels-photo-28975498.jpeg?auto=compress&cs=tinysrgb&w=700',
     borderColor: 'border-brazil-green',
     cta: 'Записаться',
     ctaClass: 'bg-brazil-green text-white hover:bg-brazil-green-dark',

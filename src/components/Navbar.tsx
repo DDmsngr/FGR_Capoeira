@@ -1,3 +1,4 @@
+import { getAsset } from '../utils/assets'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Phone } from 'lucide-react'
@@ -49,7 +50,7 @@ export default function Navbar() {
             {/* Logo */}
             <a href="#" className="flex items-center gap-2 group" aria-label="FGR Capoeira — на главную">
               <img
-                src="/logo.png"
+                src={getAsset("logo.png")}
                 alt="Familia Ginga e Raça — логотип"
                 className="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-110 transition-transform"
               />
@@ -90,14 +91,14 @@ export default function Navbar() {
             <div className="flex items-center gap-3">
               <a
                 href="tel:+79119440479"
-                className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105 ${
+                className={`hidden lg:flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105 whitespace-nowrap ${
                   isAtTop
                     ? 'text-white border border-white/30 hover:bg-white/10'
                     : 'text-brazil-green border border-brazil-green/30 hover:bg-brazil-green/5'
                 }`}
               >
                 <Phone size={14} />
-                +7 (911) 944-04-79
+                +7 911 944-04-79
               </a>
               <a href="#contact" className="hidden md:inline-flex btn-primary !py-2 !px-5 !text-sm">
                 Записаться
@@ -140,7 +141,7 @@ export default function Navbar() {
             >
               {/* Logo in mobile menu */}
               <div className="flex items-center gap-3 px-4 mb-4 pb-4 border-b border-gray-100">
-                <img src="/logo.png" alt="FGR" className="w-10 h-10 object-contain" />
+                <img src={getAsset("logo.png")} alt="FGR" className="w-10 h-10 object-contain" />
                 <span className="font-heading font-bold text-sm text-brazil-dark">Familia Ginga e Raça</span>
               </div>
               <div className="flex flex-col gap-1">
@@ -160,7 +161,7 @@ export default function Navbar() {
                 </a>
                 <a href="tel:+79119440479" className="flex items-center justify-center gap-2 w-full px-6 py-3 rounded-full border-2 border-brazil-green text-brazil-green font-semibold hover:bg-brazil-green hover:text-white transition-colors">
                   <Phone size={18} />
-                  +7 (911) 944-04-79
+                  +7 911 944-04-79
                 </a>
               </motion.div>
             </motion.nav>

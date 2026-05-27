@@ -2,42 +2,42 @@ import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
 
-// Подобраны конкретные фото: roda, акробатика, дети, берибао, фестиваль, группа
+// Все фото — реальная капоэйра с Pexels (free license)
 const images = [
   {
-    src: 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=900&q=80',
-    thumb: 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=450&q=70',
-    alt: 'Игра в роде — капоэйра',
+    src: 'https://images.pexels.com/photos/32418072/pexels-photo-32418072.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    thumb: 'https://images.pexels.com/photos/32418072/pexels-photo-32418072.jpeg?auto=compress&cs=tinysrgb&w=600',
+    alt: 'Выступление капоэйры в музее Оскара Нимейера, Бразилия',
     tall: true,
   },
   {
-    src: 'https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?w=900&q=80',
-    thumb: 'https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?w=450&q=70',
-    alt: 'Акробатика — au mortal',
+    src: 'https://images.pexels.com/photos/31251238/pexels-photo-31251238.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    thumb: 'https://images.pexels.com/photos/31251238/pexels-photo-31251238.jpeg?auto=compress&cs=tinysrgb&w=600',
+    alt: 'Капоэйра в Порто Сегуро, Баия',
     tall: false,
   },
   {
-    src: 'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=900&q=80',
-    thumb: 'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=450&q=70',
-    alt: 'Детская тренировка',
+    src: 'https://images.pexels.com/photos/28975498/pexels-photo-28975498.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    thumb: 'https://images.pexels.com/photos/28975498/pexels-photo-28975498.jpeg?auto=compress&cs=tinysrgb&w=600',
+    alt: 'Динамичное выступление на улицах Бразилии',
     tall: false,
   },
   {
-    src: 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=900&q=80',
-    thumb: 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=450&q=70',
-    alt: 'Беримбау — музыкальный инструмент',
+    src: 'https://images.pexels.com/photos/37192943/pexels-photo-37192943.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    thumb: 'https://images.pexels.com/photos/37192943/pexels-photo-37192943.jpeg?auto=compress&cs=tinysrgb&w=600',
+    alt: 'Рода с музыкантами под открытым небом',
     tall: false,
   },
   {
-    src: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=900&q=80',
-    thumb: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=450&q=70',
-    alt: 'Групповая тренировка',
+    src: 'https://images.pexels.com/photos/37192940/pexels-photo-37192940.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    thumb: 'https://images.pexels.com/photos/37192940/pexels-photo-37192940.jpeg?auto=compress&cs=tinysrgb&w=600',
+    alt: 'Капоэйристы у исторической архитектуры',
     tall: false,
   },
   {
-    src: 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=900&q=80',
-    thumb: 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=450&q=70',
-    alt: 'Фестиваль капоэйры',
+    src: 'https://images.pexels.com/photos/31251234/pexels-photo-31251234.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    thumb: 'https://images.pexels.com/photos/31251234/pexels-photo-31251234.jpeg?auto=compress&cs=tinysrgb&w=600',
+    alt: 'Капоэйра в Баии — динамика и энергия',
     tall: true,
   },
 ]
@@ -51,7 +51,6 @@ export default function Gallery() {
   const nextImage = () => setLightboxIndex((p) => (p !== null ? (p + 1) % images.length : null))
   const prevImage = () => setLightboxIndex((p) => (p !== null ? (p - 1 + images.length) % images.length : null))
 
-  // Keyboard navigation
   const handleKey = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowRight') nextImage()
     if (e.key === 'ArrowLeft') prevImage()
@@ -96,10 +95,9 @@ export default function Gallery() {
                 }`}
                 loading="lazy"
               />
-              {/* Hover overlay */}
-              <div className="absolute inset-0 bg-brazil-green/0 group-hover:bg-brazil-green/30 transition-colors duration-300" />
+              <div className="absolute inset-0 bg-brazil-green/0 group-hover:bg-brazil-green/25 transition-colors duration-300" />
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
                   <ZoomIn size={18} className="text-brazil-green" />
                 </div>
               </div>
@@ -111,7 +109,6 @@ export default function Gallery() {
         </div>
       </div>
 
-      {/* Lightbox */}
       <AnimatePresence>
         {lightboxIndex !== null && (
           <motion.div
@@ -130,7 +127,6 @@ export default function Gallery() {
             >
               <X size={20} />
             </button>
-
             <button
               onClick={(e) => { e.stopPropagation(); prevImage() }}
               className="absolute left-4 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
@@ -138,7 +134,6 @@ export default function Gallery() {
             >
               <ChevronLeft size={24} />
             </button>
-
             <motion.img
               key={lightboxIndex}
               initial={{ opacity: 0, scale: 0.92 }}
@@ -150,7 +145,6 @@ export default function Gallery() {
               className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             />
-
             <button
               onClick={(e) => { e.stopPropagation(); nextImage() }}
               className="absolute right-4 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
@@ -158,8 +152,6 @@ export default function Gallery() {
             >
               <ChevronRight size={24} />
             </button>
-
-            {/* Caption + counter */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center">
               <p className="text-white/80 text-sm mb-1">{images[lightboxIndex].alt}</p>
               <p className="text-white/40 text-xs">{lightboxIndex + 1} / {images.length}</p>

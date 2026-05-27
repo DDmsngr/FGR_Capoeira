@@ -1,3 +1,4 @@
+import { getAsset } from '../utils/assets'
 import { Heart, ArrowUp, Phone, MessageCircle, ExternalLink } from 'lucide-react'
 
 export default function Footer() {
@@ -9,7 +10,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <img
-                src="/logo.png"
+                src={getAsset("logo.png")}
                 alt="FGR Capoeira"
                 className="w-14 h-14 object-contain"
               />
