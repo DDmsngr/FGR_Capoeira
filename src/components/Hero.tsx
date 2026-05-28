@@ -1,12 +1,15 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ChevronDown, Play, CalendarCheck } from 'lucide-react'
 import { useState, useRef } from 'react'
+import { useScramble } from '../hooks/useScramble'
 
 const logoUrl = new URL('/logo.png', import.meta.url).href
 
 export default function Hero() {
   const [showVideo, setShowVideo] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
+  const line1 = useScramble('FAMILIA GINGA', 1300, 400)
+  const line2 = useScramble('E RAÇA', 900, 1000)
   const { scrollY } = useScroll()
   // Parallax: bg moves at 0.4x scroll speed
   const bgY = useTransform(scrollY, [0, 600], [0, 240])
@@ -31,6 +34,52 @@ export default function Hero() {
       {/* Gradient overlays */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/45 to-black/90 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-r from-brazil-green/20 to-transparent pointer-events-none" />
+
+      {/* === AURORA LAYER === */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        {/* Green aurora band */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            width: '160%',
+            height: '55%',
+            top: '15%',
+            left: '-30%',
+            background: 'linear-gradient(180deg, transparent 0%, rgba(0,156,59,0.38) 40%, rgba(0,156,59,0.28) 60%, transparent 100%)',
+            filter: 'blur(48px)',
+          }}
+          animate={{ y: [0, -45, 20, 0], x: [0, 35, -25, 0], scaleX: [1, 1.1, 0.94, 1] }}
+          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        {/* Yellow aurora band */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            width: '150%',
+            height: '45%',
+            top: '2%',
+            left: '-25%',
+            background: 'linear-gradient(180deg, transparent 0%, rgba(255,223,0,0.22) 45%, rgba(255,223,0,0.16) 60%, transparent 100%)',
+            filter: 'blur(65px)',
+          }}
+          animate={{ y: [0, 35, -28, 0], x: [0, -45, 25, 0], scaleX: [1, 0.9, 1.12, 1] }}
+          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        {/* Brazil blue deep accent */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            width: '130%',
+            height: '40%',
+            bottom: '5%',
+            left: '-15%',
+            background: 'linear-gradient(180deg, transparent 0%, rgba(0,39,118,0.2) 50%, transparent 100%)',
+            filter: 'blur(55px)',
+          }}
+          animate={{ y: [0, -30, 42, 0], scaleX: [1, 1.14, 0.87, 1] }}
+          transition={{ duration: 27, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      </div>
 
       {/* === ANIMATED GRADIENT MESH BLOBS === */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -129,9 +178,8 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="font-heading font-black text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white mb-4 text-shadow-lg tracking-tight"
         >
-          FAMILIA GINGA
+          {line1}
           <br />
-          {/* Animated gradient on yellow text */}
           <span
             className="animate-gradient-shift"
             style={{
@@ -142,7 +190,7 @@ export default function Hero() {
               backgroundSize: '200% 200%',
             }}
           >
-            E RAÇA
+            {line2}
           </span>
         </motion.h1>
 

@@ -1,9 +1,25 @@
 import { lazy, Suspense } from 'react'
+import { useScroll, useSpring, motion } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import ScrollToTop from './components/ScrollToTop'
 import MobileCTA from './components/MobileCTA'
 import CookieBanner from './components/CookieBanner'
+import CursorTrail from './components/CursorTrail'
+
+function ScrollProgressBar() {
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
+  return (
+    <motion.div
+      className="fixed top-0 left-0 right-0 h-[3px] z-[200] origin-left"
+      style={{
+        scaleX,
+        background: 'linear-gradient(90deg, #009C3B 0%, #FFDF00 50%, #009C3B 100%)',
+      }}
+    />
+  )
+}
 
 const About = lazy(() => import('./components/About'))
 const ForWhom = lazy(() => import('./components/ForWhom'))
@@ -27,6 +43,8 @@ function LoadingFallback() {
 export default function App() {
   return (
     <div className="overflow-x-hidden">
+      <ScrollProgressBar />
+      <CursorTrail />
       <Navbar />
       <main>
         <Hero />

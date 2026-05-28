@@ -1,6 +1,6 @@
 import { getAsset } from '../utils/assets'
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { motion, useInView, useMotionValue, useTransform, useSpring } from 'framer-motion'
+import { useRef, type MouseEvent } from 'react'
 import { Swords, Music, Users, Zap } from 'lucide-react'
 
 const features = [
@@ -9,6 +9,50 @@ const features = [
   { icon: Users,  title: 'Сообщество',       description: 'Дружная семья единомышленников', color: 'from-brazil-green/20 to-brazil-green/5' },
   { icon: Zap,    title: 'Энергия',          description: 'Движение, свобода и радость в каждом занятии', color: 'from-brazil-yellow/20 to-brazil-yellow/5' },
 ]
+
+function TiltCard({ feature, index, isInView }: {
+  feature: typeof features[0]
+  index: number
+  isInView: boolean
+}) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const rawX = useMotionValue(0)
+  const rawY = useMotionValue(0)
+  const x = useSpring(rawX, { stiffness: 200, damping: 20 })
+  const y = useSpring(rawY, { stiffness: 200, damping: 20 })
+  const rotateX = useTransform(y, [-0.5, 0.5], [10, -10])
+  const rotateY = useTransform(x, [-0.5, 0.5], [-10, 10])
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    rawX.set((e.clientX - rect.left) / rect.width - 0.5)
+    rawY.set((e.clientY - rect.top) / rect.height - 0.5)
+  }
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => { rawX.set(0); rawY.set(0) }}
+      style={{ rotateX, rotateY, transformPerspective: 700, transformStyle: 'preserve-3d' }}
+      className="glow-card p-4 rounded-xl cursor-default group relative overflow-hidden border border-gray-100"
+    >
+      <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl`} />
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-700" />
+      </div>
+      <div className="relative z-10" style={{ transform: 'translateZ(20px)' }}>
+        <feature.icon size={24} className="text-brazil-green mb-2 group-hover:scale-110 group-hover:text-brazil-green-dark transition-transform duration-300" />
+        <h3 className="font-semibold text-brazil-dark text-sm mb-1">{feature.title}</h3>
+        <p className="text-xs text-gray-500 group-hover:text-gray-600 transition-colors">{feature.description}</p>
+      </div>
+    </motion.div>
+  )
+}
 
 export default function About() {
   const ref = useRef(null)
@@ -63,25 +107,7 @@ export default function About() {
               className="grid grid-cols-2 gap-3 mt-8"
             >
               {features.map((feature, i) => (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
-                  className="glow-card p-4 rounded-xl cursor-default group relative overflow-hidden border border-gray-100"
-                >
-                  {/* Gradient bg that reveals on hover */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl`} />
-                  {/* Shimmer */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-700" />
-                  </div>
-                  <div className="relative z-10">
-                    <feature.icon size={24} className="text-brazil-green mb-2 group-hover:scale-110 group-hover:text-brazil-green-dark transition-transform duration-300" />
-                    <h3 className="font-semibold text-brazil-dark text-sm mb-1">{feature.title}</h3>
-                    <p className="text-xs text-gray-500 group-hover:text-gray-600 transition-colors">{feature.description}</p>
-                  </div>
-                </motion.div>
+                <TiltCard key={feature.title} feature={feature} index={i} isInView={isInView} />
               ))}
             </motion.div>
           </div>
