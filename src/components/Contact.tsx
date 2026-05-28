@@ -3,14 +3,18 @@ import { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Phone, MessageCircle, Instagram, Send, MapPin, CheckCircle, ExternalLink } from 'lucide-react'
+import { Phone, MessageCircle, Instagram, Send, MapPin, CheckCircle, ExternalLink, Shield } from 'lucide-react'
 import { locations } from '../data/locations'
+import PrivacyPolicyModal from './PrivacyPolicyModal'
 
 const formSchema = z.object({
   name: z.string().min(2, 'Введите имя').max(50),
   phone: z.string().regex(/^[\d\s\-+()]{10,}$/, 'Введите корректный телефон'),
   location: z.string().min(1, 'Выберите зал'),
   message: z.string().max(500).optional(),
+  consent: z.literal(true, {
+    errorMap: () => ({ message: 'Необходимо дать согласие на обработку персональных данных' }),
+  }),
 })
 
 type FormData = z.infer<typeof formSchema>
@@ -20,24 +24,13 @@ export default function Contact() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [policyOpen, setPolicyOpen] = useState(false)
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   })
 
   const onSubmit = async (_data: FormData) => {
-    // ── ВАРИАНТ 1: Telegram Bot ──────────────────────────────────────
-    // const text = `📩 Новая заявка\n👤 ${_data.name}\n📞 ${_data.phone}\n📍 ${_data.location}\n💬 ${_data.message || '—'}`
-    // await fetch(`https://api.telegram.org/bot<BOT_TOKEN>/sendMessage`, {
-    //   method: 'POST', headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ chat_id: '<CHAT_ID>', text }),
-    // })
-    //
-    // ── ВАРИАНТ 2: Formspree ─────────────────────────────────────────
-    // await fetch('https://formspree.io/f/<YOUR_FORM_ID>', {
-    //   method: 'POST', headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(_data),
-    // })
     setIsSubmitting(true)
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -52,6 +45,8 @@ export default function Contact() {
 
   return (
     <section id="contact" className="section-padding bg-gray-50" ref={ref}>
+      <PrivacyPolicyModal isOpen={policyOpen} onClose={() => setPolicyOpen(false)} />
+
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -135,6 +130,44 @@ export default function Contact() {
                       className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 hover:border-gray-300 transition-colors focus:outline-none focus:border-brazil-green resize-none"
                     />
                   </div>
+
+                  {/* === 152-ФЗ: Consent checkbox === */}
+                  <div className={`p-4 rounded-xl border-2 transition-colors ${errors.consent ? 'border-red-200 bg-red-50' : 'border-gray-100 bg-gray-50'}`}>
+                    <label className="flex items-start gap-3 cursor-pointer group">
+                      <div className="relative shrink-0 mt-0.5">
+                        <input
+                          {...register('consent')}
+                          type="checkbox"
+                          id="consent"
+                          className="sr-only peer"
+                        />
+                        <div className="w-5 h-5 rounded border-2 border-gray-300 peer-checked:bg-brazil-green peer-checked:border-brazil-green transition-colors flex items-center justify-center">
+                          <svg className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity" fill="none" viewBox="0 0 12 12">
+                            <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
+                      </div>
+                      <span className="text-xs text-gray-600 leading-relaxed select-none">
+                        Я даю{' '}
+                        <button
+                          type="button"
+                          onClick={() => setPolicyOpen(true)}
+                          className="text-brazil-green font-medium underline hover:text-brazil-green-dark transition-colors"
+                        >
+                          согласие на обработку персональных данных
+                        </button>{' '}
+                        в соответствии с Политикой конфиденциальности и Федеральным законом № 152-ФЗ.
+                        Согласие может быть отозвано в любой момент.
+                      </span>
+                    </label>
+                    {errors.consent && (
+                      <p className="mt-2 text-xs text-red-500 flex items-center gap-1">
+                        <Shield size={12} />
+                        {errors.consent.message}
+                      </p>
+                    )}
+                  </div>
+
                   <button type="submit" disabled={isSubmitting} className="w-full btn-primary !rounded-xl disabled:opacity-70 disabled:cursor-not-allowed gap-2">
                     {isSubmitting ? (
                       <>
@@ -148,9 +181,12 @@ export default function Contact() {
                       </>
                     )}
                   </button>
-                  <p className="text-xs text-gray-400 text-center">
-                    Нажимая кнопку, вы соглашаетесь с обработкой персональных данных
-                  </p>
+
+                  {/* 152-ФЗ micro-label */}
+                  <div className="flex items-center justify-center gap-1.5 text-[11px] text-gray-400">
+                    <Shield size={11} />
+                    <span>Данные защищены согласно 152-ФЗ</span>
+                  </div>
                 </div>
               </form>
             )}

@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import ScrollToTop from './components/ScrollToTop'
 import MobileCTA from './components/MobileCTA'
+import CookieBanner from './components/CookieBanner'
 
 const About = lazy(() => import('./components/About'))
 const ForWhom = lazy(() => import('./components/ForWhom'))
@@ -46,6 +47,8 @@ export default function App() {
       </Suspense>
       <ScrollToTop />
       <MobileCTA />
+      {/* 152-ФЗ: Cookie consent banner */}
+      <CookieBanner />
     </div>
   )
 }

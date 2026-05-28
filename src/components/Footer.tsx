@@ -1,9 +1,15 @@
 import { getAsset } from '../utils/assets'
-import { Heart, ArrowUp, Phone, MessageCircle, ExternalLink } from 'lucide-react'
+import { Heart, ArrowUp, Phone, MessageCircle, ExternalLink, Shield } from 'lucide-react'
+import { useState } from 'react'
+import PrivacyPolicyModal from './PrivacyPolicyModal'
 
 export default function Footer() {
+  const [policyOpen, setPolicyOpen] = useState(false)
+
   return (
     <footer className="bg-brazil-dark text-white">
+      <PrivacyPolicyModal isOpen={policyOpen} onClose={() => setPolicyOpen(false)} />
+
       <div className="container-custom px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
@@ -82,11 +88,21 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-white/40 flex items-center gap-1.5">
-            © {new Date().getFullYear()} Familia Ginga e Raça. Сделано с
-            <Heart size={14} className="text-red-500 fill-red-500" />
-            в СПб
-          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            <p className="text-sm text-white/40 flex items-center gap-1.5">
+              © {new Date().getFullYear()} Familia Ginga e Raça. Сделано с
+              <Heart size={14} className="text-red-500 fill-red-500" />
+              в СПб
+            </p>
+            {/* 152-ФЗ: link to Privacy Policy */}
+            <button
+              onClick={() => setPolicyOpen(true)}
+              className="flex items-center gap-1.5 text-sm text-white/35 hover:text-brazil-yellow transition-colors"
+            >
+              <Shield size={12} />
+              Политика конфиденциальности
+            </button>
+          </div>
           <a href="#" className="flex items-center gap-2 text-sm text-white/40 hover:text-brazil-yellow transition-colors">
             <ArrowUp size={14} />
             Наверх
