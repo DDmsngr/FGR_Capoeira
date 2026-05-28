@@ -39,19 +39,19 @@ export default function CursorTrail() {
 
     const onMove = (e: MouseEvent) => {
       if (!active) setActive(true)
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 2; i++) {
         particles.current.push({
-          x: e.clientX + (Math.random() - 0.5) * 14,
-          y: e.clientY + (Math.random() - 0.5) * 14,
-          vx: (Math.random() - 0.5) * 1.8,
-          vy: (Math.random() - 0.5) * 1.8 - 0.6,
-          life: 1,
-          size: 2 + Math.random() * 4.5,
+          x: e.clientX + (Math.random() - 0.5) * 8,
+          y: e.clientY + (Math.random() - 0.5) * 8,
+          vx: (Math.random() - 0.5) * 1.0,
+          vy: (Math.random() - 0.5) * 1.0 - 0.4,
+          life: 0.55,
+          size: 1.5 + Math.random() * 2,
           color: COLORS[Math.floor(Math.random() * COLORS.length)],
         })
       }
-      if (particles.current.length > 250) {
-        particles.current = particles.current.slice(-250)
+      if (particles.current.length > 80) {
+        particles.current = particles.current.slice(-80)
       }
     }
     window.addEventListener('mousemove', onMove)
@@ -63,8 +63,8 @@ export default function CursorTrail() {
         p.x += p.vx
         p.y += p.vy
         p.vy += 0.045
-        p.life -= 0.022
-        const alpha = p.life * p.life
+        p.life -= 0.032
+        const alpha = p.life * p.life * 0.45
         ctx.beginPath()
         ctx.arc(p.x, p.y, Math.max(0.1, p.size * p.life), 0, Math.PI * 2)
         ctx.fillStyle = `${p.color}${alpha.toFixed(3)})`
