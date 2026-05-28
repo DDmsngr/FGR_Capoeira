@@ -8,37 +8,31 @@ const images = [
     src: 'https://images.pexels.com/photos/32418072/pexels-photo-32418072.jpeg?auto=compress&cs=tinysrgb&w=1200',
     thumb: 'https://images.pexels.com/photos/32418072/pexels-photo-32418072.jpeg?auto=compress&cs=tinysrgb&w=600',
     alt: 'Выступление капоэйры в музее Оскара Нимейера, Бразилия',
-    tall: true,
   },
   {
     src: 'https://images.pexels.com/photos/31251238/pexels-photo-31251238.jpeg?auto=compress&cs=tinysrgb&w=1200',
     thumb: 'https://images.pexels.com/photos/31251238/pexels-photo-31251238.jpeg?auto=compress&cs=tinysrgb&w=600',
     alt: 'Капоэйра в Порто Сегуро, Баия',
-    tall: false,
   },
   {
     src: 'https://images.pexels.com/photos/28975498/pexels-photo-28975498.jpeg?auto=compress&cs=tinysrgb&w=1200',
     thumb: 'https://images.pexels.com/photos/28975498/pexels-photo-28975498.jpeg?auto=compress&cs=tinysrgb&w=600',
     alt: 'Динамичное выступление на улицах Бразилии',
-    tall: false,
   },
   {
     src: 'https://images.pexels.com/photos/37192943/pexels-photo-37192943.jpeg?auto=compress&cs=tinysrgb&w=1200',
     thumb: 'https://images.pexels.com/photos/37192943/pexels-photo-37192943.jpeg?auto=compress&cs=tinysrgb&w=600',
     alt: 'Рода с музыкантами под открытым небом',
-    tall: false,
   },
   {
     src: 'https://images.pexels.com/photos/37192940/pexels-photo-37192940.jpeg?auto=compress&cs=tinysrgb&w=1200',
     thumb: 'https://images.pexels.com/photos/37192940/pexels-photo-37192940.jpeg?auto=compress&cs=tinysrgb&w=600',
     alt: 'Капоэйристы у исторической архитектуры',
-    tall: false,
   },
   {
     src: 'https://images.pexels.com/photos/31251234/pexels-photo-31251234.jpeg?auto=compress&cs=tinysrgb&w=1200',
     thumb: 'https://images.pexels.com/photos/31251234/pexels-photo-31251234.jpeg?auto=compress&cs=tinysrgb&w=600',
     alt: 'Капоэйра в Баии — динамика и энергия',
-    tall: true,
   },
 ]
 
@@ -82,17 +76,13 @@ export default function Gallery() {
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.4, delay: i * 0.08 }}
               onClick={() => setLightboxIndex(i)}
-              className={`group relative overflow-hidden rounded-2xl focus:outline-none focus:ring-2 focus:ring-brazil-green ${
-                img.tall ? 'md:row-span-2' : ''
-              }`}
+              className="group relative overflow-hidden rounded-2xl focus:outline-none focus:ring-2 focus:ring-brazil-green aspect-[4/3]"
               aria-label={`Открыть: ${img.alt}`}
             >
               <img
                 src={img.thumb}
                 alt={img.alt}
-                className={`w-full object-cover transition-transform duration-500 group-hover:scale-110 ${
-                  img.tall ? 'h-52 md:h-full md:min-h-[440px]' : 'h-48 md:h-52'
-                }`}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-brazil-green/0 group-hover:bg-brazil-green/25 transition-colors duration-300" />
