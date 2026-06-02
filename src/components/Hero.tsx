@@ -5,13 +5,12 @@ import { useScramble } from '../hooks/useScramble'
 
 const logoUrl = new URL('/logo.png', import.meta.url).href
 
-// Чередование: Санкт-Петербург + капоэйра
+// Только виды Санкт-Петербурга
 const BG_IMAGES = [
   'https://images.pexels.com/photos/3573990/pexels-photo-3573990.jpeg?auto=compress&cs=tinysrgb&w=1920',
-  'https://images.pexels.com/photos/31251238/pexels-photo-31251238.jpeg?auto=compress&cs=tinysrgb&w=1920',
   'https://images.pexels.com/photos/2069373/pexels-photo-2069373.jpeg?auto=compress&cs=tinysrgb&w=1920',
-  'https://images.pexels.com/photos/28975498/pexels-photo-28975498.jpeg?auto=compress&cs=tinysrgb&w=1920',
   'https://images.pexels.com/photos/1128408/pexels-photo-1128408.jpeg?auto=compress&cs=tinysrgb&w=1920',
+  'https://images.pexels.com/photos/4388164/pexels-photo-4388164.jpeg?auto=compress&cs=tinysrgb&w=1920',
 ]
 
 export default function Hero() {

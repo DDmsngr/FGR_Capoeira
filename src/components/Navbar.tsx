@@ -56,22 +56,22 @@ export default function Navbar() {
                 className="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-110 transition-transform"
               />
               <div
-                className={`font-heading font-bold text-sm md:text-base transition-colors ${
+                className={`font-heading font-bold transition-colors ${
                   isAtTop ? 'text-white' : 'text-brazil-dark'
                 }`}
               >
-                <span className="block leading-tight">Familia Ginga e Raça</span>
-                <span className={`block leading-tight text-[10px] font-medium tracking-wide ${isAtTop ? 'text-white/60' : 'text-gray-400'}`}>Санкт-Петербург</span>
+                <span className="block leading-tight text-sm whitespace-nowrap">Familia Ginga e Raça</span>
+                <span className={`block leading-tight text-[10px] font-medium tracking-wide whitespace-nowrap ${isAtTop ? 'text-white/60' : 'text-gray-400'}`}>Санкт-Петербург</span>
               </div>
             </a>
 
             {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center gap-1" aria-label="Основная навигация">
+            <nav className="hidden lg:flex items-center gap-0.5" aria-label="Основная навигация">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className={`relative px-3 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-brazil-green/10 ${
+                  className={`relative px-2 py-2 text-xs font-medium transition-colors rounded-lg whitespace-nowrap hover:bg-brazil-green/10 ${
                     activeSection === link.href
                       ? isAtTop ? 'text-brazil-yellow' : 'text-brazil-green'
                       : isAtTop ? 'text-white/90 hover:text-white' : 'text-gray-600 hover:text-brazil-green'
