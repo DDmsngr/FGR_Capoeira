@@ -5,12 +5,18 @@ import { useScramble } from '../hooks/useScramble'
 
 const logoUrl = new URL('/logo.png', import.meta.url).href
 
-// Только виды Санкт-Петербурга
+// Виды Санкт-Петербурга: проверенные фото с реальными достопримечательностями
 const BG_IMAGES = [
-  'https://images.pexels.com/photos/3573990/pexels-photo-3573990.jpeg?auto=compress&cs=tinysrgb&w=1920',
-  'https://images.pexels.com/photos/2069373/pexels-photo-2069373.jpeg?auto=compress&cs=tinysrgb&w=1920',
-  'https://images.pexels.com/photos/1128408/pexels-photo-1128408.jpeg?auto=compress&cs=tinysrgb&w=1920',
-  'https://images.pexels.com/photos/4388164/pexels-photo-4388164.jpeg?auto=compress&cs=tinysrgb&w=1920',
+  // Ночная панорама: Исаакиевский собор + мосты + Нева
+  'https://images.pexels.com/photos/30651061/pexels-photo-30651061.jpeg?auto=compress&cs=tinysrgb&w=1920',
+  // Спас на Крови на закате с Грибоедовским каналом
+  'https://images.pexels.com/photos/15513872/pexels-photo-15513872.jpeg?auto=compress&cs=tinysrgb&w=1920',
+  // Петропавловская крепость со стороны Невы
+  'https://images.pexels.com/photos/16551042/pexels-photo-16551042.jpeg?auto=compress&cs=tinysrgb&w=1920',
+  // Мост Эрмитажа над Зимней канавкой на закате
+  'https://images.pexels.com/photos/12250795/pexels-photo-12250795.jpeg?auto=compress&cs=tinysrgb&w=1920',
+  // Дворцовая площадь зимой
+  'https://images.pexels.com/photos/30697755/pexels-photo-30697755.jpeg?auto=compress&cs=tinysrgb&w=1920',
 ]
 
 export default function Hero() {
