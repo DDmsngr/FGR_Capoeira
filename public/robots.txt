@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fgr-capoeira.ru/sitemap.xml
