@@ -1,13 +1,28 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { ChevronDown, Play, CalendarCheck } from 'lucide-react'
-import { useState, useRef } from 'react'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { ChevronDown, Play, CalendarCheck, MapPin } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
 import { useScramble } from '../hooks/useScramble'
 
 const logoUrl = new URL('/logo.png', import.meta.url).href
 
+// Чередование: Санкт-Петербург + капоэйра
+const BG_IMAGES = [
+  'https://images.pexels.com/photos/3573990/pexels-photo-3573990.jpeg?auto=compress&cs=tinysrgb&w=1920',
+  'https://images.pexels.com/photos/31251238/pexels-photo-31251238.jpeg?auto=compress&cs=tinysrgb&w=1920',
+  'https://images.pexels.com/photos/2069373/pexels-photo-2069373.jpeg?auto=compress&cs=tinysrgb&w=1920',
+  'https://images.pexels.com/photos/28975498/pexels-photo-28975498.jpeg?auto=compress&cs=tinysrgb&w=1920',
+  'https://images.pexels.com/photos/1128408/pexels-photo-1128408.jpeg?auto=compress&cs=tinysrgb&w=1920',
+]
+
 export default function Hero() {
   const [showVideo, setShowVideo] = useState(false)
+  const [bgIndex, setBgIndex] = useState(0)
   const sectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const id = setInterval(() => setBgIndex(i => (i + 1) % BG_IMAGES.length), 6000)
+    return () => clearInterval(id)
+  }, [])
   const line1 = useScramble('FAMILIA GINGA', 1300, 400)
   const line2 = useScramble('E RAÇA', 900, 1000)
   const { scrollY } = useScroll()
@@ -18,17 +33,22 @@ export default function Hero() {
 
   return (
     <section id="hero" ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden noise-overlay">
-      {/* === PARALLAX BACKGROUND === */}
+      {/* === PARALLAX BACKGROUND SLIDESHOW === */}
       <motion.div
         style={{ y: bgY }}
         className="absolute inset-0 will-change-transform"
       >
-        <div
-          className="absolute inset-0 scale-110 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.pexels.com/photos/31251238/pexels-photo-31251238.jpeg?auto=compress&cs=tinysrgb&w=1920')`,
-          }}
-        />
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={bgIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.8, ease: 'easeInOut' }}
+            className="absolute inset-0 scale-110 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url('${BG_IMAGES[bgIndex]}')` }}
+          />
+        </AnimatePresence>
       </motion.div>
 
       {/* Gradient overlays */}
@@ -170,6 +190,19 @@ export default function Hero() {
               />
             </div>
           </motion.div>
+        </motion.div>
+
+        {/* СПб-бейдж */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="mb-5"
+        >
+          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold text-white/90 border border-white/20 bg-white/10 backdrop-blur-sm">
+            <MapPin size={13} className="text-brazil-yellow" />
+            Санкт-Петербургский филиал
+          </span>
         </motion.div>
 
         <motion.h1
