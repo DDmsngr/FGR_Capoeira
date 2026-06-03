@@ -5,10 +5,8 @@ import { Check, Gift, Users, CreditCard, ArrowRight } from 'lucide-react'
 
 const included = [
   'Все тренировки в зале',
-  'Участие в roda',
+  'Участие в Roda',
   'Музыкальные занятия',
-  'Поддержка в чате',
-  'Доступ к обучающим материалам',
 ]
 
 const benefits = [

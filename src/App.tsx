@@ -26,6 +26,7 @@ const About = lazy(() => import('./components/About'))
 const School = lazy(() => import('./components/School'))
 const ForWhom = lazy(() => import('./components/ForWhom'))
 const Schedule = lazy(() => import('./components/Schedule'))
+const Pricing = lazy(() => import('./components/Pricing'))
 const Directions = lazy(() => import('./components/Directions'))
 const Gallery = lazy(() => import('./components/Gallery'))
 const History = lazy(() => import('./components/History'))
@@ -65,6 +66,7 @@ export default function App() {
           <School />
           <ForWhom />
           <Schedule />
+          <Pricing />
           <Directions />
           <Gallery />
           <History />
