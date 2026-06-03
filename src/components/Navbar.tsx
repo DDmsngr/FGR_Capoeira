@@ -10,9 +10,7 @@ const navLinks = [
   { href: '#for-whom', label: 'Для кого' },
   { href: '#schedule', label: 'Расписание' },
   { href: '#directions', label: 'Направления' },
-  { href: '#prices', label: 'Цены' },
   { href: '#gallery', label: 'Галерея' },
-  { href: '#faq', label: 'FAQ' },
   { href: '#contact', label: 'Контакты' },
 ]
 

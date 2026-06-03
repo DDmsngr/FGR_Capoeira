@@ -26,10 +26,8 @@ const School = lazy(() => import('./components/School'))
 const ForWhom = lazy(() => import('./components/ForWhom'))
 const Schedule = lazy(() => import('./components/Schedule'))
 const Directions = lazy(() => import('./components/Directions'))
-const Pricing = lazy(() => import('./components/Pricing'))
 const Gallery = lazy(() => import('./components/Gallery'))
 const History = lazy(() => import('./components/History'))
-const FAQ = lazy(() => import('./components/FAQ'))
 const Contact = lazy(() => import('./components/Contact'))
 const Footer = lazy(() => import('./components/Footer'))
 
@@ -55,10 +53,8 @@ export default function App() {
           <ForWhom />
           <Schedule />
           <Directions />
-          <Pricing />
           <Gallery />
           <History />
-          <FAQ />
           <Contact />
         </Suspense>
       </main>
