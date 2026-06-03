@@ -1,5 +1,6 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { Users, ArrowRight } from 'lucide-react'
 
 export default function School() {
   const ref = useRef(null)
@@ -83,6 +84,23 @@ export default function School() {
             FGR в Петербурге — это не просто спортивная секция, а живое сообщество,
             где традиция встречается с северным городом.
           </p>
+        </motion.div>
+
+        {/* Masters CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex justify-center mt-10"
+        >
+          <a
+            href="#/masters"
+            className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition-all text-sm font-medium group"
+          >
+            <Users size={16} className="text-brazil-green" />
+            Познакомиться с мастерами
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </a>
         </motion.div>
 
       </div>

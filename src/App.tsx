@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState, useEffect } from 'react'
 import { useScroll, useSpring, motion } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -6,6 +6,7 @@ import ScrollToTop from './components/ScrollToTop'
 import MobileCTA from './components/MobileCTA'
 import CookieBanner from './components/CookieBanner'
 import CursorTrail from './components/CursorTrail'
+import MastersPage from './pages/MastersPage'
 
 function ScrollProgressBar() {
   const { scrollYProgress } = useScroll()
@@ -40,6 +41,18 @@ function LoadingFallback() {
 }
 
 export default function App() {
+  const [page, setPage] = useState(() =>
+    window.location.hash === '#/masters' ? 'masters' : 'main'
+  )
+
+  useEffect(() => {
+    const handler = () => setPage(window.location.hash === '#/masters' ? 'masters' : 'main')
+    window.addEventListener('hashchange', handler)
+    return () => window.removeEventListener('hashchange', handler)
+  }, [])
+
+  if (page === 'masters') return <MastersPage />
+
   return (
     <div className="overflow-x-hidden">
       <ScrollProgressBar />
