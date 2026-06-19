@@ -1,3 +1,5 @@
+import data from './masters.json'
+
 export interface Master {
   name: string
   rank: string
@@ -8,41 +10,4 @@ export interface Master {
   photo: string
 }
 
-export const masters: Master[] = [
-  {
-    name: 'Mestre Jair',
-    rank: 'Мастер',
-    years: '40+ лет практики',
-    origin: 'Сальвадор, Бразилия',
-    bio: 'Основатель школы Familia Ginga e Raça. Начал заниматься капоэйрой в Сальвадоре в 1983 году и прошёл путь от ученика до мастера под руководством Mestre Canjiquinha. Сегодня руководит школой из Бразилии и регулярно приезжает на семинары в Россию.',
-    rankColor: '#009C3B',
-    photo: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=600',
-  },
-  {
-    name: 'Contramestre Alexandre',
-    rank: 'Контраместе',
-    years: '20 лет практики',
-    origin: 'Санкт-Петербург',
-    bio: 'Руководитель санкт-петербургского филиала FGR. Начал заниматься в 2003 году, прошёл подготовку в Бразилии. Проводит основные группы взрослых и подростков, организует Родас и городские мероприятия.',
-    rankColor: '#FFDF00',
-    photo: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600',
-  },
-  {
-    name: 'Кирилл Морозов',
-    rank: 'Профессор',
-    years: '12 лет практики',
-    origin: 'Санкт-Петербург',
-    bio: 'Тренер детских групп школы FGR с 2016 года. Специализируется на работе с детьми 3–12 лет: игровой формат, акробатика, ритмика. Параллельно преподаёт атабак и пандейру в музыкальной группе.',
-    rankColor: '#009C3B',
-    photo: 'https://images.pexels.com/photos/1547248/pexels-photo-1547248.jpeg?auto=compress&cs=tinysrgb&w=600',
-  },
-  {
-    name: 'Анастасия Волкова',
-    rank: 'Профессора',
-    years: '10 лет практики',
-    origin: 'Санкт-Петербург',
-    bio: 'Тренер по Capoeira Angola и португальскому языку. Прошла подготовку в Бразилии, обучалась у Mestre Moraes. Ведёт группы взрослых, а также занятия по афробразильским танцам — Макулеле и Коку ди Рода.',
-    rankColor: '#FFDF00',
-    photo: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=600',
-  },
-]
+export const masters: Master[] = data

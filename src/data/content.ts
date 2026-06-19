@@ -1,39 +1,27 @@
+import data from './content.json'
+
 export interface Feature {
   title: string
   description: string
 }
 
-export const aboutContent = {
-  tagline: 'О капоэйре',
-  title: 'Что такое капоэйра?',
-  subtitle: 'капоэйра',
-  intro: 'Капоэйра (Capoeira) — бразильское боевое искусство, сочетающее боевую технику, элементы танца, музыку и акробатику.',
-  description1: 'Это не просто спорт — это целая культура, где сила встречается с грацией, а боевой дух — с радостью игры.',
-  description2: 'Хотите стать сильным и выносливым, развить чувство равновесия и ритма, узнать о традициях Бразилии, научиться играть на бразильских инструментах и узнать основы португальского языка?',
-  cta: 'Приходите!',
-  imageUrl: 'https://images.pexels.com/photos/32418072/pexels-photo-32418072.jpeg?auto=compress&cs=tinysrgb&w=800',
-  imageAlt: 'Игра в роде — капоэйра',
-  features: [
-    {
-      title: 'Боевое искусство',
-      description: 'Удары, уходы, подсечки и акробатические элементы',
-    },
-    {
-      title: 'Музыка',
-      description: 'Беримбау, атабак, песни на португальском',
-    },
-    {
-      title: 'Сообщество',
-      description: 'Дружная семья единомышленников',
-    },
-    {
-      title: 'Энергия',
-      description: 'Движение, свобода и радость в каждом занятии',
-    },
-  ] as Feature[],
+export interface AboutContent {
+  tagline: string
+  title: string
+  subtitle: string
+  intro: string
+  description1: string
+  description2: string
+  cta: string
+  imageUrl: string
+  imageAlt: string
+  features: Feature[]
 }
 
-export const aboutStats = {
-  number: 5,
-  label: 'стран мира',
+export interface AboutStats {
+  number: number
+  label: string
 }
+
+export const aboutContent: AboutContent = data.aboutContent
+export const aboutStats: AboutStats = data.aboutStats

@@ -1,0 +1,32 @@
+[
+  {
+    "src": "https://images.pexels.com/photos/32418072/pexels-photo-32418072.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    "thumb": "https://images.pexels.com/photos/32418072/pexels-photo-32418072.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "alt": "Выступление капоэйры в музее Оскара Нимейера, Бразилия"
+  },
+  {
+    "src": "https://images.pexels.com/photos/31251238/pexels-photo-31251238.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    "thumb": "https://images.pexels.com/photos/31251238/pexels-photo-31251238.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "alt": "Капоэйра в Порто Сегуро, Баия"
+  },
+  {
+    "src": "https://images.pexels.com/photos/28975498/pexels-photo-28975498.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    "thumb": "https://images.pexels.com/photos/28975498/pexels-photo-28975498.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "alt": "Динамичное выступление на улицах Бразилии"
+  },
+  {
+    "src": "https://images.pexels.com/photos/37192943/pexels-photo-37192943.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    "thumb": "https://images.pexels.com/photos/37192943/pexels-photo-37192943.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "alt": "Рода с музыкантами под открытым небом"
+  },
+  {
+    "src": "https://images.pexels.com/photos/37192940/pexels-photo-37192940.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    "thumb": "https://images.pexels.com/photos/37192940/pexels-photo-37192940.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "alt": "Капоэйристы у исторической архитектуры"
+  },
+  {
+    "src": "https://images.pexels.com/photos/31251234/pexels-photo-31251234.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    "thumb": "https://images.pexels.com/photos/31251234/pexels-photo-31251234.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "alt": "Капоэйра в Баии — динамика и энергия"
+  }
+]

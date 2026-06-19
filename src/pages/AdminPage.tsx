@@ -1,87 +1,195 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Lock, LogOut, Save, FileJson } from 'lucide-react'
-import { masters } from '../data/masters'
-import { galleryImages } from '../data/gallery'
-import { aboutContent, aboutStats } from '../data/content'
+import { Lock, LogOut, Save, Loader2, AlertCircle, CheckCircle2, RotateCcw } from 'lucide-react'
+import { authenticate, loadData, saveData, type DataType } from '../admin/api'
+import { MastersEditor } from '../admin/editors/MastersEditor'
+import { GalleryEditor } from '../admin/editors/GalleryEditor'
+import { ContentEditor, type ContentPayload } from '../admin/editors/ContentEditor'
+import { LocationsEditor } from '../admin/editors/LocationsEditor'
+import { DirectionsEditor } from '../admin/editors/DirectionsEditor'
+import { FAQEditor } from '../admin/editors/FAQEditor'
+import type { Master } from '../data/masters'
+import type { GalleryImage } from '../data/gallery'
+import type { Location, Direction, FAQItem } from '../data/locations'
 
-const API_URL = 'http://localhost:3001/api'
+const TABS: { key: DataType; label: string }[] = [
+  { key: 'masters', label: 'Мастера' },
+  { key: 'gallery', label: 'Галерея' },
+  { key: 'content', label: 'О капоэйре' },
+  { key: 'locations', label: 'Локации' },
+  { key: 'directions', label: 'Направления' },
+  { key: 'faq', label: 'FAQ' },
+]
+
+const PASS_KEY = 'fgr_admin_pass'
+
+interface SectionState {
+  data: unknown
+  sha: string
+  initial: string
+  loaded: boolean
+  loading: boolean
+  error: string
+}
+
+const EMPTY: SectionState = { data: null, sha: '', initial: '', loaded: false, loading: false, error: '' }
 
 export default function AdminPage() {
   const [password, setPassword] = useState('')
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [activeTab, setActiveTab] = useState('masters')
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState('')
+  const [isAuth, setIsAuth] = useState(false)
+  const [authError, setAuthError] = useState('')
+  const [authLoading, setAuthLoading] = useState(false)
+  const [activeTab, setActiveTab] = useState<DataType>('masters')
+  const [sections, setSections] = useState<Record<DataType, SectionState>>({
+    masters: { ...EMPTY },
+    gallery: { ...EMPTY },
+    content: { ...EMPTY },
+    locations: { ...EMPTY },
+    directions: { ...EMPTY },
+    faq: { ...EMPTY },
+  })
+  const [saving, setSaving] = useState(false)
+  const [toast, setToast] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null)
 
-  // Data states
-  const [mastersData, setMastersData] = useState(masters)
-  const [galleryData, setGalleryData] = useState(galleryImages)
-  const [contentData, setContentData] = useState({ aboutContent, aboutStats })
+  const current = sections[activeTab]
+  const isDirty = current.loaded && JSON.stringify(current.data) !== current.initial
 
-  const authenticate = (e) => {
-    e.preventDefault()
-    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'admin123'
-    if (password === adminPassword) {
-      setIsAuthenticated(true)
-      setPassword('')
-      setMessage('✓ Авторизация успешна')
-      setTimeout(() => setMessage(''), 2000)
-    } else {
-      setMessage('✗ Неверный пароль')
-      setTimeout(() => setMessage(''), 2000)
+  // restore password from sessionStorage (только на время вкладки)
+  useEffect(() => {
+    const saved = sessionStorage.getItem(PASS_KEY)
+    if (saved) {
+      authenticate(saved)
+        .then(() => {
+          setPassword(saved)
+          setIsAuth(true)
+        })
+        .catch(() => sessionStorage.removeItem(PASS_KEY))
     }
-  }
+  }, [])
 
-  const logout = () => {
-    setIsAuthenticated(false)
-    setPassword('')
-    setMessage('')
-  }
-
-  const saveData = async () => {
-    if (!isAuthenticated) return
-
-    setLoading(true)
-    try {
-      const payload =
-        activeTab === 'masters'
-          ? mastersData
-          : activeTab === 'gallery'
-            ? galleryData
-            : contentData
-
-      const response = await fetch(`${API_URL}/content/${activeTab}/save`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_ADMIN_PASSWORD || 'admin123'}`,
-        },
-        body: JSON.stringify(payload),
-      })
-
-      const result = await response.json()
-      if (response.ok) {
-        setMessage(`✓ ${result.message}`)
-      } else {
-        setMessage(`✗ Ошибка: ${result.error}`)
+  // load active tab data when auth or tab changes
+  const loadTab = useCallback(
+    async (tab: DataType) => {
+      setSections((prev) => ({ ...prev, [tab]: { ...prev[tab], loading: true, error: '' } }))
+      try {
+        const { content, sha } = await loadData<unknown>(tab, password)
+        setSections((prev) => ({
+          ...prev,
+          [tab]: {
+            data: content,
+            sha,
+            initial: JSON.stringify(content),
+            loaded: true,
+            loading: false,
+            error: '',
+          },
+        }))
+      } catch (e) {
+        setSections((prev) => ({
+          ...prev,
+          [tab]: {
+            ...prev[tab],
+            loading: false,
+            error: e instanceof Error ? e.message : 'Ошибка загрузки',
+          },
+        }))
       }
-    } catch (error) {
-      setMessage(`✗ Ошибка подключения: ${error.message}`)
+    },
+    [password],
+  )
+
+  useEffect(() => {
+    if (isAuth && !sections[activeTab].loaded && !sections[activeTab].loading) {
+      loadTab(activeTab)
+    }
+  }, [isAuth, activeTab, sections, loadTab])
+
+  // warn before leaving with unsaved changes
+  useEffect(() => {
+    const anyDirty = Object.values(sections).some(
+      (s) => s.loaded && JSON.stringify(s.data) !== s.initial,
+    )
+    if (!anyDirty) return
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault()
+      e.returnValue = ''
+    }
+    window.addEventListener('beforeunload', handler)
+    return () => window.removeEventListener('beforeunload', handler)
+  }, [sections])
+
+  const showToast = (kind: 'ok' | 'err', text: string) => {
+    setToast({ kind, text })
+    setTimeout(() => setToast(null), 3500)
+  }
+
+  const handleAuth = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setAuthError('')
+    setAuthLoading(true)
+    try {
+      await authenticate(password)
+      setIsAuth(true)
+      sessionStorage.setItem(PASS_KEY, password)
+    } catch (err) {
+      setAuthError(err instanceof Error ? err.message : 'Ошибка авторизации')
     } finally {
-      setLoading(false)
-      setTimeout(() => setMessage(''), 3000)
+      setAuthLoading(false)
     }
   }
 
-  if (!isAuthenticated) {
+  const handleLogout = () => {
+    sessionStorage.removeItem(PASS_KEY)
+    setIsAuth(false)
+    setPassword('')
+    setSections({
+      masters: { ...EMPTY },
+      gallery: { ...EMPTY },
+      content: { ...EMPTY },
+      locations: { ...EMPTY },
+      directions: { ...EMPTY },
+      faq: { ...EMPTY },
+    })
+  }
+
+  const handleSave = async () => {
+    if (!isDirty) return
+    setSaving(true)
+    try {
+      const { sha } = await saveData(activeTab, current.data, password, current.sha)
+      setSections((prev) => ({
+        ...prev,
+        [activeTab]: {
+          ...prev[activeTab],
+          sha,
+          initial: JSON.stringify(prev[activeTab].data),
+        },
+      }))
+      showToast('ok', 'Сохранено. GitHub Actions запустит деплой через ~1 минуту.')
+    } catch (e) {
+      showToast('err', e instanceof Error ? e.message : 'Ошибка сохранения')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleRevert = () => {
+    if (!isDirty) return
+    if (!confirm('Откатить все изменения этой вкладки?')) return
+    setSections((prev) => ({
+      ...prev,
+      [activeTab]: { ...prev[activeTab], data: JSON.parse(prev[activeTab].initial) },
+    }))
+  }
+
+  const updateActive = (data: unknown) => {
+    setSections((prev) => ({ ...prev, [activeTab]: { ...prev[activeTab], data } }))
+  }
+
+  if (!isAuth) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-brazil-green/10 to-brazil-yellow/10 flex items-center justify-center p-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-md"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
           <div className="bg-white rounded-2xl shadow-xl p-8 border border-brazil-green/20">
             <div className="flex items-center justify-center mb-6">
               <Lock className="text-brazil-green" size={32} />
@@ -89,24 +197,30 @@ export default function AdminPage() {
             <h1 className="text-2xl font-bold text-brazil-dark text-center mb-2">Админка FGR</h1>
             <p className="text-gray-500 text-center mb-6">Управление контентом сайта</p>
 
-            <form onSubmit={authenticate} className="space-y-4">
+            <form onSubmit={handleAuth} className="space-y-4">
               <input
                 type="password"
                 placeholder="Пароль"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brazil-green/50 transition"
+                disabled={authLoading}
+                autoFocus
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brazil-green/50 transition disabled:opacity-50"
               />
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-brazil-green to-brazil-green/80 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition"
+                disabled={authLoading || !password}
+                className="w-full bg-gradient-to-r from-brazil-green to-brazil-green/80 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition disabled:opacity-50 flex items-center justify-center gap-2"
               >
+                {authLoading && <Loader2 size={16} className="animate-spin" />}
                 Войти
               </button>
             </form>
 
-            {message && (
-              <div className="mt-4 p-3 bg-gray-100 rounded-lg text-center text-sm">{message}</div>
+            {authError && (
+              <div className="mt-4 p-3 bg-red-50 border border-red-100 rounded-lg text-center text-sm text-red-700 flex items-center justify-center gap-2">
+                <AlertCircle size={16} /> {authError}
+              </div>
             )}
           </div>
         </motion.div>
@@ -115,13 +229,12 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+    <div className="min-h-screen bg-gray-50 pb-24">
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="container-custom px-4 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-brazil-dark">Admin Panel</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-brazil-dark">FGR · Админка</h1>
           <button
-            onClick={logout}
+            onClick={handleLogout}
             className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition text-sm font-medium"
           >
             <LogOut size={16} />
@@ -130,194 +243,135 @@ export default function AdminPage() {
         </div>
       </div>
 
-      <div className="container-custom px-4 py-8">
-        {/* Tabs */}
-        <div className="flex gap-2 mb-8 border-b border-gray-200">
-          {['masters', 'gallery', 'content'].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 font-semibold transition border-b-2 ${activeTab === tab
-                  ? 'border-brazil-green text-brazil-green'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
+      <div className="container-custom px-4 py-6">
+        <div className="flex gap-1 mb-6 border-b border-gray-200 overflow-x-auto -mx-4 px-4">
+          {TABS.map((tab) => {
+            const s = sections[tab.key]
+            const tabDirty = s.loaded && JSON.stringify(s.data) !== s.initial
+            return (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`shrink-0 px-4 sm:px-5 py-3 font-semibold transition border-b-2 text-sm sm:text-base ${
+                  activeTab === tab.key
+                    ? 'border-brazil-green text-brazil-green'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
                 }`}
-            >
-              {tab === 'masters' && 'Мастера'}
-              {tab === 'gallery' && 'Галерея'}
-              {tab === 'content' && 'Контент'}
-            </button>
-          ))}
+              >
+                {tab.label}
+                {tabDirty && <span className="ml-1.5 inline-block w-1.5 h-1.5 bg-orange-500 rounded-full" />}
+              </button>
+            )
+          })}
         </div>
 
-        {/* Content */}
         <motion.div
           key={activeTab}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8"
+          className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6"
         >
-          {activeTab === 'masters' && (
-            <MastersEditor data={mastersData} onChange={setMastersData} />
+          {current.loading && (
+            <div className="flex items-center justify-center py-16 text-gray-500">
+              <Loader2 className="animate-spin mr-2" size={20} /> Загрузка…
+            </div>
           )}
-          {activeTab === 'gallery' && (
-            <GalleryEditor data={galleryData} onChange={setGalleryData} />
+          {current.error && (
+            <div className="p-4 bg-red-50 border border-red-100 rounded-lg flex items-start gap-3 text-sm text-red-700">
+              <AlertCircle size={18} className="shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="font-semibold">Не удалось загрузить</p>
+                <p className="mt-1">{current.error}</p>
+                <button
+                  onClick={() => loadTab(activeTab)}
+                  className="mt-2 text-xs font-semibold text-red-700 underline"
+                >
+                  Повторить
+                </button>
+              </div>
+            </div>
           )}
-          {activeTab === 'content' && (
-            <ContentEditor data={contentData} onChange={setContentData} />
+          {current.loaded && !current.error && (
+            <ActiveEditor tab={activeTab} data={current.data} onChange={updateActive} password={password} />
           )}
         </motion.div>
+      </div>
 
-        {/* Save Button & Message */}
-        <div className="flex items-center justify-between gap-4">
-          <div className="text-sm text-gray-500">
-            <FileJson size={16} className="inline mr-2" />
-            Изменения будут автоматически закоммичены в GitHub
+      {current.loaded && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-20">
+          <div className="container-custom px-4 py-3 flex items-center justify-between gap-3">
+            <div className="text-xs sm:text-sm text-gray-500">
+              {isDirty ? (
+                <span className="text-orange-600 font-medium">● Есть несохранённые изменения</span>
+              ) : (
+                <span>Изменений нет</span>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleRevert}
+                disabled={!isDirty || saving}
+                className="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-30"
+              >
+                <RotateCcw size={14} />
+                <span className="hidden sm:inline">Откатить</span>
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={!isDirty || saving}
+                className="flex items-center gap-2 px-4 sm:px-5 py-2 bg-gradient-to-r from-brazil-green to-brazil-green/80 text-white font-semibold rounded-lg hover:shadow-lg disabled:opacity-40 transition text-sm"
+              >
+                {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
+                {saving ? 'Сохранение…' : 'Сохранить'}
+              </button>
+            </div>
           </div>
-          <button
-            onClick={saveData}
-            disabled={loading}
-            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-brazil-green to-brazil-green/80 text-white font-semibold rounded-lg hover:shadow-lg disabled:opacity-50 transition"
-          >
-            <Save size={18} />
-            {loading ? 'Сохранение...' : 'Сохранить и коммитить'}
-          </button>
         </div>
+      )}
 
-        {message && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-4 p-4 bg-gray-100 rounded-lg text-center font-medium text-sm"
-          >
-            {message}
-          </motion.div>
-        )}
-      </div>
-    </div>
-  )
-}
-
-function MastersEditor({ data, onChange }) {
-  return (
-    <div className="space-y-6">
-      {data.map((master, idx) => (
-        <div key={idx} className="p-4 bg-gray-50 rounded-lg space-y-3 border border-gray-200">
-          <input
-            type="text"
-            value={master.name}
-            onChange={(e) => {
-              const updated = [...data]
-              updated[idx].name = e.target.value
-              onChange(updated)
-            }}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brazil-green/50 text-sm font-semibold"
-            placeholder="Имя"
-          />
-          <input
-            type="text"
-            value={master.rank}
-            onChange={(e) => {
-              const updated = [...data]
-              updated[idx].rank = e.target.value
-              onChange(updated)
-            }}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brazil-green/50 text-sm"
-            placeholder="Звание"
-          />
-          <textarea
-            value={master.bio}
-            onChange={(e) => {
-              const updated = [...data]
-              updated[idx].bio = e.target.value
-              onChange(updated)
-            }}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brazil-green/50 text-sm h-24"
-            placeholder="Биография"
-          />
-          <input
-            type="text"
-            value={master.photo}
-            onChange={(e) => {
-              const updated = [...data]
-              updated[idx].photo = e.target.value
-              onChange(updated)
-            }}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brazil-green/50 text-xs text-gray-500"
-            placeholder="URL фото"
-          />
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function GalleryEditor({ data, onChange }) {
-  return (
-    <div className="space-y-6">
-      {data.map((img, idx) => (
-        <div key={idx} className="p-4 bg-gray-50 rounded-lg space-y-3 border border-gray-200">
-          <input
-            type="text"
-            value={img.alt}
-            onChange={(e) => {
-              const updated = [...data]
-              updated[idx].alt = e.target.value
-              onChange(updated)
-            }}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brazil-green/50 text-sm font-semibold"
-            placeholder="Описание"
-          />
-          <input
-            type="text"
-            value={img.src}
-            onChange={(e) => {
-              const updated = [...data]
-              updated[idx].src = e.target.value
-              onChange(updated)
-            }}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brazil-green/50 text-xs text-gray-500"
-            placeholder="URL большого размера"
-          />
-          {img.thumb && (
-            <img src={img.thumb} alt="preview" className="w-full h-32 object-cover rounded-lg" />
+      {toast && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`fixed top-20 right-4 z-30 max-w-sm p-4 rounded-lg shadow-lg flex items-start gap-3 ${
+            toast.kind === 'ok' ? 'bg-green-50 border border-green-200 text-green-800' : 'bg-red-50 border border-red-200 text-red-800'
+          }`}
+        >
+          {toast.kind === 'ok' ? (
+            <CheckCircle2 size={18} className="shrink-0 mt-0.5" />
+          ) : (
+            <AlertCircle size={18} className="shrink-0 mt-0.5" />
           )}
-        </div>
-      ))}
+          <p className="text-sm font-medium">{toast.text}</p>
+        </motion.div>
+      )}
     </div>
   )
 }
 
-function ContentEditor({ data, onChange }) {
-  return (
-    <div className="space-y-6">
-      <div>
-        <label className="block text-sm font-semibold mb-2">О капоэйре — основной текст</label>
-        <textarea
-          value={data.aboutContent.intro}
-          onChange={(e) => {
-            onChange({
-              ...data,
-              aboutContent: { ...data.aboutContent, intro: e.target.value },
-            })
-          }}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brazil-green/50 text-sm h-24"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold mb-2">Количество стран</label>
-        <input
-          type="number"
-          value={data.aboutStats.number}
-          onChange={(e) => {
-            onChange({
-              ...data,
-              aboutStats: { ...data.aboutStats, number: parseInt(e.target.value) },
-            })
-          }}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brazil-green/50 text-sm"
-        />
-      </div>
-    </div>
-  )
+function ActiveEditor({
+  tab,
+  data,
+  onChange,
+  password,
+}: {
+  tab: DataType
+  data: unknown
+  onChange: (d: unknown) => void
+  password: string
+}) {
+  switch (tab) {
+    case 'masters':
+      return <MastersEditor data={data as Master[]} onChange={onChange} password={password} />
+    case 'gallery':
+      return <GalleryEditor data={data as GalleryImage[]} onChange={onChange} password={password} />
+    case 'content':
+      return <ContentEditor data={data as ContentPayload} onChange={onChange} password={password} />
+    case 'locations':
+      return <LocationsEditor data={data as Location[]} onChange={onChange} />
+    case 'directions':
+      return <DirectionsEditor data={data as Direction[]} onChange={onChange} />
+    case 'faq':
+      return <FAQEditor data={data as FAQItem[]} onChange={onChange} />
+  }
 }
