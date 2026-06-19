@@ -7,6 +7,7 @@ import MobileCTA from './components/MobileCTA'
 import CookieBanner from './components/CookieBanner'
 import CursorTrail from './components/CursorTrail'
 import MastersPage from './pages/MastersPage'
+import AdminPage from './pages/AdminPage'
 
 function ScrollProgressBar() {
   const { scrollYProgress } = useScroll()
@@ -42,17 +43,26 @@ function LoadingFallback() {
 }
 
 export default function App() {
-  const [page, setPage] = useState(() =>
-    window.location.hash === '#/masters' ? 'masters' : 'main'
-  )
+  const [page, setPage] = useState(() => {
+    const hash = window.location.hash
+    if (hash === '#/masters') return 'masters'
+    if (hash === '#/admin') return 'admin'
+    return 'main'
+  })
 
   useEffect(() => {
-    const handler = () => setPage(window.location.hash === '#/masters' ? 'masters' : 'main')
+    const handler = () => {
+      const hash = window.location.hash
+      if (hash === '#/masters') setPage('masters')
+      else if (hash === '#/admin') setPage('admin')
+      else setPage('main')
+    }
     window.addEventListener('hashchange', handler)
     return () => window.removeEventListener('hashchange', handler)
   }, [])
 
   if (page === 'masters') return <MastersPage />
+  if (page === 'admin') return <AdminPage />
 
   return (
     <div className="overflow-x-hidden">

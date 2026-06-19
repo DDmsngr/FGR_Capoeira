@@ -1,40 +1,7 @@
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
-
-// Все фото — реальная капоэйра с Pexels (free license)
-const images = [
-  {
-    src: 'https://images.pexels.com/photos/32418072/pexels-photo-32418072.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumb: 'https://images.pexels.com/photos/32418072/pexels-photo-32418072.jpeg?auto=compress&cs=tinysrgb&w=600',
-    alt: 'Выступление капоэйры в музее Оскара Нимейера, Бразилия',
-  },
-  {
-    src: 'https://images.pexels.com/photos/31251238/pexels-photo-31251238.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumb: 'https://images.pexels.com/photos/31251238/pexels-photo-31251238.jpeg?auto=compress&cs=tinysrgb&w=600',
-    alt: 'Капоэйра в Порто Сегуро, Баия',
-  },
-  {
-    src: 'https://images.pexels.com/photos/28975498/pexels-photo-28975498.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumb: 'https://images.pexels.com/photos/28975498/pexels-photo-28975498.jpeg?auto=compress&cs=tinysrgb&w=600',
-    alt: 'Динамичное выступление на улицах Бразилии',
-  },
-  {
-    src: 'https://images.pexels.com/photos/37192943/pexels-photo-37192943.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumb: 'https://images.pexels.com/photos/37192943/pexels-photo-37192943.jpeg?auto=compress&cs=tinysrgb&w=600',
-    alt: 'Рода с музыкантами под открытым небом',
-  },
-  {
-    src: 'https://images.pexels.com/photos/37192940/pexels-photo-37192940.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumb: 'https://images.pexels.com/photos/37192940/pexels-photo-37192940.jpeg?auto=compress&cs=tinysrgb&w=600',
-    alt: 'Капоэйристы у исторической архитектуры',
-  },
-  {
-    src: 'https://images.pexels.com/photos/31251234/pexels-photo-31251234.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumb: 'https://images.pexels.com/photos/31251234/pexels-photo-31251234.jpeg?auto=compress&cs=tinysrgb&w=600',
-    alt: 'Капоэйра в Баии — динамика и энергия',
-  },
-]
+import { galleryImages } from '../data/gallery'
 
 export default function Gallery() {
   const ref = useRef(null)
@@ -42,8 +9,8 @@ export default function Gallery() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
   const closeLightbox = () => setLightboxIndex(null)
-  const nextImage = () => setLightboxIndex((p) => (p !== null ? (p + 1) % images.length : null))
-  const prevImage = () => setLightboxIndex((p) => (p !== null ? (p - 1 + images.length) % images.length : null))
+  const nextImage = () => setLightboxIndex((p) => (p !== null ? (p + 1) % galleryImages.length : null))
+  const prevImage = () => setLightboxIndex((p) => (p !== null ? (p - 1 + galleryImages.length) % galleryImages.length : null))
 
   const handleKey = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowRight') nextImage()
@@ -69,7 +36,7 @@ export default function Gallery() {
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-          {images.map((img, i) => (
+          {galleryImages.map((img, i) => (
             <motion.button
               key={i}
               initial={{ opacity: 0, scale: 0.9 }}
@@ -130,8 +97,8 @@ export default function Gallery() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.92 }}
               transition={{ duration: 0.25 }}
-              src={images[lightboxIndex].src}
-              alt={images[lightboxIndex].alt}
+              src={galleryImages[lightboxIndex].src}
+              alt={galleryImages[lightboxIndex].alt}
               className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             />
@@ -143,8 +110,8 @@ export default function Gallery() {
               <ChevronRight size={24} />
             </button>
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center">
-              <p className="text-white/80 text-sm mb-1">{images[lightboxIndex].alt}</p>
-              <p className="text-white/40 text-xs">{lightboxIndex + 1} / {images.length}</p>
+              <p className="text-white/80 text-sm mb-1">{galleryImages[lightboxIndex].alt}</p>
+              <p className="text-white/40 text-xs">{lightboxIndex + 1} / {galleryImages.length}</p>
             </div>
           </motion.div>
         )}
