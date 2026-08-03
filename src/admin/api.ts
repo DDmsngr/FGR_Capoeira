@@ -1,6 +1,15 @@
 const API_URL = import.meta.env.VITE_API_URL || ''
 
-export type DataType = 'masters' | 'gallery' | 'content' | 'locations' | 'directions' | 'faq'
+export type DataType =
+  | 'masters'
+  | 'gallery'
+  | 'content'
+  | 'locations'
+  | 'directions'
+  | 'faq'
+  | 'hero'
+  | 'forwhom'
+  | 'school'
 
 export interface LoadResult<T> {
   content: T

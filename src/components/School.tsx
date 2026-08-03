@@ -1,6 +1,8 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Users, ArrowRight } from 'lucide-react'
+import { schoolContent } from '../data/school'
+import { renderRichText } from '../utils/richText'
 
 export default function School() {
   const ref = useRef(null)
@@ -45,10 +47,10 @@ export default function School() {
           className="text-center mb-12"
         >
           <span className="inline-block px-4 py-1.5 bg-brazil-green/20 text-brazil-green text-sm font-semibold rounded-full mb-4 border border-brazil-green/20">
-            История
+            {schoolContent.sectionTag}
           </span>
           <h2 className="font-heading font-black text-3xl sm:text-4xl md:text-5xl text-white mb-4">
-            Санкт-Петербургский{' '}
+            {schoolContent.titleMain}{' '}
             <span
               className="animate-gradient-shift"
               style={{
@@ -59,10 +61,10 @@ export default function School() {
                 backgroundSize: '200% 200%',
               }}
             >
-              филиал
+              {schoolContent.titleHighlight}
             </span>
           </h2>
-          <p className="text-white/50 max-w-2xl mx-auto">Escola de Capoeira Familia Ginga e Raça</p>
+          <p className="text-white/50 max-w-2xl mx-auto">{schoolContent.subtitle}</p>
         </motion.div>
 
         {/* History text */}
@@ -72,18 +74,9 @@ export default function School() {
           transition={{ duration: 0.6, delay: 0.15 }}
           className="max-w-3xl mx-auto space-y-5 text-white/70 text-base md:text-lg leading-relaxed text-center"
         >
-          <p>
-            Школа <strong className="text-white">Familia Ginga e Raça (FGR)</strong> — международное братство
-            капоэйры с бразильскими корнями и более чем 30-летней историей. Основанная Mestre Jair'ом
-            в традициях Angola и Regional, школа сегодня объединяет практиков в пяти странах: Бразилии,
-            России, Анголе, Казахстане и Турции.
-          </p>
-          <p>
-            <strong className="text-white">Санкт-Петербургский филиал</strong> открылся в начале 2000-х годов
-            и за эти годы объединил сотни учеников — от детей 3 лет до взрослых 50+.
-            FGR в Петербурге — это не просто спортивная секция, а живое сообщество,
-            где традиция встречается с северным городом.
-          </p>
+          {schoolContent.paragraphs.map((p, i) => (
+            <p key={i}>{renderRichText(p)}</p>
+          ))}
         </motion.div>
 
         {/* Masters CTA */}
@@ -98,7 +91,7 @@ export default function School() {
             className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition-all text-sm font-medium group"
           >
             <Users size={16} className="text-brazil-green" />
-            Познакомиться с мастерами
+            {schoolContent.mastersCta}
             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </a>
         </motion.div>

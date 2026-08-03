@@ -1,30 +1,28 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Baby, Dumbbell, ArrowRight } from 'lucide-react'
+import { forWhomContent, type ForWhomCard } from '../data/forwhom'
 
-const cards = [
+interface CardView extends ForWhomCard {
+  id: 'children' | 'adults'
+  icon: typeof Baby
+  borderColor: string
+  ctaClass: string
+}
+
+const cards: CardView[] = [
   {
+    ...forWhomContent.children,
     id: 'children',
     icon: Baby,
-    title: 'Для детей и подростков',
-    subtitle: '3–5 лет · 6–9 лет · 10–15 лет',
-    description: 'Развитие координации, гибкости, дисциплины. Учимся работать в команде, преодолевать страхи, верить в себя. Яркие эмоции и настоящие друзья!',
-    // Ребёнок делает мостик / акробатику
-    image: 'https://images.pexels.com/photos/30495349/pexels-photo-30495349.jpeg?auto=compress&cs=tinysrgb&w=700',
     borderColor: 'border-brazil-yellow',
-    cta: 'Записать ребёнка',
     ctaClass: 'bg-brazil-yellow text-brazil-dark hover:bg-brazil-gold',
   },
   {
+    ...forWhomContent.adults,
     id: 'adults',
     icon: Dumbbell,
-    title: 'Для взрослых',
-    subtitle: 'Любой возраст и уровень подготовки',
-    description: 'Необычный фитнес + боевое искусство + танец. Снимите стресс после работы, получите заряд энергии, научитесь владеть своим телом.',
-    // Взрослые тренируются — бразильское боевое искусство
-    image: 'https://images.pexels.com/photos/28975498/pexels-photo-28975498.jpeg?auto=compress&cs=tinysrgb&w=700',
     borderColor: 'border-brazil-green',
-    cta: 'Записаться',
     ctaClass: 'bg-brazil-green text-white hover:bg-brazil-green-dark',
   },
 ]
@@ -43,10 +41,11 @@ export default function ForWhom() {
           className="text-center mb-12"
         >
           <span className="inline-block px-4 py-1.5 bg-brazil-green/10 text-brazil-green text-sm font-semibold rounded-full mb-4">
-            Для кого
+            {forWhomContent.sectionTag}
           </span>
           <h2 className="font-heading font-black text-3xl sm:text-4xl md:text-5xl text-brazil-dark">
-            Капоэйра для <span className="gradient-text">каждого</span>
+            {forWhomContent.sectionTitle}{' '}
+            <span className="gradient-text">{forWhomContent.sectionTitleHighlight}</span>
           </h2>
         </motion.div>
 

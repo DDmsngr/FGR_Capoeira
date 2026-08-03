@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { ChevronDown, Play, CalendarCheck, MapPin } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import { useScramble } from '../hooks/useScramble'
+import { heroContent } from '../data/hero'
 
 const logoUrl = new URL('/logo.png', import.meta.url).href
 
@@ -28,8 +29,8 @@ export default function Hero() {
     const id = setInterval(() => setBgIndex(i => (i + 1) % BG_IMAGES.length), 6000)
     return () => clearInterval(id)
   }, [])
-  const line1 = useScramble('FAMILIA GINGA', 1300, 400)
-  const line2 = useScramble('E RAÇA', 900, 1000)
+  const line1 = useScramble(heroContent.title1, 1300, 400)
+  const line2 = useScramble(heroContent.title2, 900, 1000)
   const { scrollY } = useScroll()
   // Parallax: bg moves at 0.4x scroll speed
   const bgY = useTransform(scrollY, [0, 600], [0, 240])
@@ -206,7 +207,7 @@ export default function Hero() {
         >
           <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold text-white/90 border border-white/20 bg-white/10 backdrop-blur-sm">
             <MapPin size={13} className="text-brazil-yellow" />
-            Санкт-Петербургский филиал
+            {heroContent.cityBadge}
           </span>
         </motion.div>
 
@@ -238,7 +239,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-xl sm:text-2xl md:text-3xl text-white/90 font-light mb-2 text-shadow"
         >
-          Капоэйра в Санкт-Петербурге
+          {heroContent.subtitle}
         </motion.p>
 
         <motion.p
@@ -247,7 +248,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="text-sm sm:text-base md:text-lg text-white/65 mb-10 max-w-2xl mx-auto"
         >
-          Международная школа капоэйры · 30 лет истории · Бразилия · Россия · Ангола · Казахстан · Турция
+          {heroContent.tagline}
         </motion.p>
 
         <motion.div
@@ -258,7 +259,7 @@ export default function Hero() {
         >
           <a href="#contact" className="btn-primary text-base md:text-lg gap-2 shadow-[0_0_30px_rgba(255,223,0,0.25)] hover:shadow-[0_0_40px_rgba(255,223,0,0.45)]">
             <CalendarCheck size={20} />
-            Записаться на бесплатное пробное
+            {heroContent.primaryCta}
           </a>
           {/* Glassmorphism secondary button */}
           <a
@@ -269,7 +270,7 @@ export default function Hero() {
               backdrop-blur-sm
               hover:scale-105 active:scale-95"
           >
-            Узнать больше
+            {heroContent.secondaryCta}
           </a>
         </motion.div>
 

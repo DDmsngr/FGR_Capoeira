@@ -8,14 +8,23 @@ import { ContentEditor, type ContentPayload } from '../admin/editors/ContentEdit
 import { LocationsEditor } from '../admin/editors/LocationsEditor'
 import { DirectionsEditor } from '../admin/editors/DirectionsEditor'
 import { FAQEditor } from '../admin/editors/FAQEditor'
+import { HeroEditor } from '../admin/editors/HeroEditor'
+import { ForWhomEditor } from '../admin/editors/ForWhomEditor'
+import { SchoolEditor } from '../admin/editors/SchoolEditor'
 import type { Master } from '../data/masters'
 import type { GalleryImage } from '../data/gallery'
 import type { Location, Direction, FAQItem } from '../data/locations'
+import type { HeroContent } from '../data/hero'
+import type { ForWhomContent } from '../data/forwhom'
+import type { SchoolContent } from '../data/school'
 
 const TABS: { key: DataType; label: string }[] = [
+  { key: 'hero', label: 'Главный экран' },
+  { key: 'content', label: 'О капоэйре' },
+  { key: 'forwhom', label: 'Для кого' },
+  { key: 'school', label: 'История' },
   { key: 'masters', label: 'Мастера' },
   { key: 'gallery', label: 'Галерея' },
-  { key: 'content', label: 'О капоэйре' },
   { key: 'locations', label: 'Локации' },
   { key: 'directions', label: 'Направления' },
   { key: 'faq', label: 'FAQ' },
@@ -34,20 +43,22 @@ interface SectionState {
 
 const EMPTY: SectionState = { data: null, sha: '', initial: '', loaded: false, loading: false, error: '' }
 
+const emptySections = (): Record<DataType, SectionState> =>
+  TABS.reduce(
+    (acc, t) => {
+      acc[t.key] = { ...EMPTY }
+      return acc
+    },
+    {} as Record<DataType, SectionState>,
+  )
+
 export default function AdminPage() {
   const [password, setPassword] = useState('')
   const [isAuth, setIsAuth] = useState(false)
   const [authError, setAuthError] = useState('')
   const [authLoading, setAuthLoading] = useState(false)
-  const [activeTab, setActiveTab] = useState<DataType>('masters')
-  const [sections, setSections] = useState<Record<DataType, SectionState>>({
-    masters: { ...EMPTY },
-    gallery: { ...EMPTY },
-    content: { ...EMPTY },
-    locations: { ...EMPTY },
-    directions: { ...EMPTY },
-    faq: { ...EMPTY },
-  })
+  const [activeTab, setActiveTab] = useState<DataType>(TABS[0].key)
+  const [sections, setSections] = useState<Record<DataType, SectionState>>(emptySections)
   const [saving, setSaving] = useState(false)
   const [toast, setToast] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null)
 
@@ -142,14 +153,7 @@ export default function AdminPage() {
     sessionStorage.removeItem(PASS_KEY)
     setIsAuth(false)
     setPassword('')
-    setSections({
-      masters: { ...EMPTY },
-      gallery: { ...EMPTY },
-      content: { ...EMPTY },
-      locations: { ...EMPTY },
-      directions: { ...EMPTY },
-      faq: { ...EMPTY },
-    })
+    setSections(emptySections())
   }
 
   const handleSave = async () => {
@@ -361,12 +365,18 @@ function ActiveEditor({
   password: string
 }) {
   switch (tab) {
+    case 'hero':
+      return <HeroEditor data={data as HeroContent} onChange={onChange} />
+    case 'content':
+      return <ContentEditor data={data as ContentPayload} onChange={onChange} password={password} />
+    case 'forwhom':
+      return <ForWhomEditor data={data as ForWhomContent} onChange={onChange} password={password} />
+    case 'school':
+      return <SchoolEditor data={data as SchoolContent} onChange={onChange} />
     case 'masters':
       return <MastersEditor data={data as Master[]} onChange={onChange} password={password} />
     case 'gallery':
       return <GalleryEditor data={data as GalleryImage[]} onChange={onChange} password={password} />
-    case 'content':
-      return <ContentEditor data={data as ContentPayload} onChange={onChange} password={password} />
     case 'locations':
       return <LocationsEditor data={data as Location[]} onChange={onChange} />
     case 'directions':
