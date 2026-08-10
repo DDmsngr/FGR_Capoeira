@@ -11,18 +11,21 @@ import { FAQEditor } from '../admin/editors/FAQEditor'
 import { HeroEditor } from '../admin/editors/HeroEditor'
 import { ForWhomEditor } from '../admin/editors/ForWhomEditor'
 import { SchoolEditor } from '../admin/editors/SchoolEditor'
+import { HistoryEditor } from '../admin/editors/HistoryEditor'
 import type { Master } from '../data/masters'
 import type { GalleryImage } from '../data/gallery'
 import type { Location, Direction, FAQItem } from '../data/locations'
 import type { HeroContent } from '../data/hero'
 import type { ForWhomContent } from '../data/forwhom'
 import type { SchoolContent } from '../data/school'
+import type { HistoryContent } from '../data/history'
 
 const TABS: { key: DataType; label: string }[] = [
   { key: 'hero', label: 'Главный экран' },
   { key: 'content', label: 'О капоэйре' },
+  { key: 'history', label: 'О школе' },
   { key: 'forwhom', label: 'Для кого' },
-  { key: 'school', label: 'История' },
+  { key: 'school', label: 'СПб филиал' },
   { key: 'masters', label: 'Мастера' },
   { key: 'gallery', label: 'Галерея' },
   { key: 'locations', label: 'Локации' },
@@ -373,6 +376,8 @@ function ActiveEditor({
       return <ForWhomEditor data={data as ForWhomContent} onChange={onChange} password={password} />
     case 'school':
       return <SchoolEditor data={data as SchoolContent} onChange={onChange} />
+    case 'history':
+      return <HistoryEditor data={data as HistoryContent} onChange={onChange} />
     case 'masters':
       return <MastersEditor data={data as Master[]} onChange={onChange} password={password} />
     case 'gallery':

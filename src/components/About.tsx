@@ -2,13 +2,23 @@ import { getAsset } from '../utils/assets'
 import { motion, useInView, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import { useRef, type MouseEvent } from 'react'
 import { Swords, Music, Users, Zap } from 'lucide-react'
+import { aboutContent, aboutStats } from '../data/content'
+import { renderRichText } from '../utils/richText'
 
-const features = [
-  { icon: Swords, title: 'Боевое искусство', description: 'Удары, уходы, подсечки и акробатические элементы', color: 'from-brazil-green/20 to-brazil-green/5' },
-  { icon: Music,  title: 'Музыка',           description: 'Беримбау, атабак, песни на португальском', color: 'from-brazil-yellow/20 to-brazil-yellow/5' },
-  { icon: Users,  title: 'Сообщество',       description: 'Дружная семья единомышленников', color: 'from-brazil-green/20 to-brazil-green/5' },
-  { icon: Zap,    title: 'Энергия',          description: 'Движение, свобода и радость в каждом занятии', color: 'from-brazil-yellow/20 to-brazil-yellow/5' },
+const featureIcons = [Swords, Music, Users, Zap]
+const featureColors = [
+  'from-brazil-green/20 to-brazil-green/5',
+  'from-brazil-yellow/20 to-brazil-yellow/5',
+  'from-brazil-green/20 to-brazil-green/5',
+  'from-brazil-yellow/20 to-brazil-yellow/5',
 ]
+
+const features = aboutContent.features.map((f, i) => ({
+  icon: featureIcons[i % featureIcons.length],
+  title: f.title,
+  description: f.description,
+  color: featureColors[i % featureColors.length],
+}))
 
 function TiltCard({ feature, index, isInView }: {
   feature: typeof features[0]
@@ -70,10 +80,12 @@ export default function About() {
               transition={{ duration: 0.6 }}
             >
               <span className="inline-block px-4 py-1.5 bg-brazil-green/10 text-brazil-green text-sm font-semibold rounded-full mb-4 tracking-wide">
-                О капоэйре
+                {aboutContent.tagline}
               </span>
               <h2 className="font-heading font-black text-3xl sm:text-4xl md:text-5xl text-brazil-dark mb-6">
-                Что такое <span className="gradient-text">капоэйра?</span>
+                {aboutContent.title.split(aboutContent.subtitle)[0]}
+                <span className="gradient-text">{aboutContent.subtitle}</span>
+                {aboutContent.title.split(aboutContent.subtitle)[1] || ''}
               </h2>
             </motion.div>
 
@@ -83,20 +95,10 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="space-y-4 text-gray-600 text-base md:text-lg leading-relaxed"
             >
-              <p>
-                <strong className="text-brazil-dark">Капоэйра (Capoeira)</strong> — бразильское боевое
-                искусство, сочетающее боевую технику, элементы танца, музыку и акробатику.
-              </p>
-              <p>
-                Это не просто спорт — это целая культура, где сила встречается с грацией,
-                а боевой дух — с радостью игры.
-              </p>
-              <p>
-                Хотите стать сильным и выносливым, развить чувство равновесия и ритма,
-                узнать о традициях Бразилии, научиться играть на бразильских инструментах
-                и узнать основы португальского языка?
-              </p>
-              <p className="font-semibold text-brazil-green text-xl">Приходите!</p>
+              <p>{renderRichText(aboutContent.intro, 'text-brazil-dark')}</p>
+              <p>{aboutContent.description1}</p>
+              <p>{aboutContent.description2}</p>
+              <p className="font-semibold text-brazil-green text-xl">{aboutContent.cta}</p>
             </motion.div>
 
             {/* === PREMIUM feature cards: gradient bg + glow on hover === */}
@@ -124,8 +126,8 @@ export default function About() {
 
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="https://images.pexels.com/photos/32418072/pexels-photo-32418072.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Игра в роде — капоэйра"
+                src={aboutContent.imageUrl}
+                alt={aboutContent.imageAlt}
                 className="w-full h-[400px] md:h-[500px] object-cover"
                 loading="lazy"
               />
@@ -161,8 +163,8 @@ export default function About() {
                 boxShadow: '0 8px 32px rgba(255,223,0,0.35)',
               }}
             >
-              <div className="text-3xl md:text-4xl font-heading font-black text-brazil-dark">5</div>
-              <div className="text-sm text-brazil-dark/70 font-medium">стран мира</div>
+              <div className="text-3xl md:text-4xl font-heading font-black text-brazil-dark">{aboutStats.number}</div>
+              <div className="text-sm text-brazil-dark/70 font-medium">{aboutStats.label}</div>
             </motion.div>
           </motion.div>
         </div>

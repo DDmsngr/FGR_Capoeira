@@ -23,6 +23,7 @@ const DATA_PATHS: Record<string, string> = {
   hero: 'src/data/hero.json',
   forwhom: 'src/data/forwhom.json',
   school: 'src/data/school.json',
+  history: 'src/data/history.json',
 }
 
 export default {

@@ -10,6 +10,7 @@ export type DataType =
   | 'hero'
   | 'forwhom'
   | 'school'
+  | 'history'
 
 export interface LoadResult<T> {
   content: T

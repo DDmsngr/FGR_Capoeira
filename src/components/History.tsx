@@ -1,14 +1,10 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Globe, Calendar, Heart } from 'lucide-react'
+import { historyContent } from '../data/history'
+import { renderRichText } from '../utils/richText'
 
-const countries = [
-  { name: 'Бразилия', code: 'br' },
-  { name: 'Россия',   code: 'ru' },
-  { name: 'Ангола',   code: 'ao' },
-  { name: 'Казахстан', code: 'kz' },
-  { name: 'Турция',   code: 'tr' },
-]
+const statIcons = [Calendar, Globe, Heart]
 
 export default function History() {
   const ref = useRef(null)
@@ -76,10 +72,10 @@ export default function History() {
               transition={{ duration: 0.6 }}
             >
               <span className="inline-block px-4 py-1.5 bg-brazil-green/20 text-brazil-green text-sm font-semibold rounded-full mb-4 tracking-wide border border-brazil-green/20">
-                О школе
+                {historyContent.sectionTag}
               </span>
               <h2 className="font-heading font-black text-3xl sm:text-4xl md:text-5xl mb-6">
-                Familia Ginga
+                {historyContent.titleMain}
                 <br />
                 {/* Animated yellow gradient text */}
                 <span
@@ -92,7 +88,7 @@ export default function History() {
                     backgroundSize: '200% 200%',
                   }}
                 >
-                  e Raça
+                  {historyContent.titleHighlight}
                 </span>
               </h2>
             </motion.div>
@@ -103,18 +99,9 @@ export default function History() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="space-y-4 text-white/75 text-base md:text-lg leading-relaxed"
             >
-              <p>
-                Международная школа капоэйры с более чем{' '}
-                <strong className="text-white">30-летней историей</strong>.
-              </p>
-              <p>
-                FGR объединяет практиков капоэйры на нескольких континентах. Наша философия —
-                это не просто движения, это особый стиль, энергия и братство.
-              </p>
-              <p>
-                Мы сохраняем традиции капоэйры, передавая их новым поколениям,
-                и создаём пространство для роста каждого ученика.
-              </p>
+              {historyContent.paragraphs.map((p, i) => (
+                <p key={i}>{renderRichText(p)}</p>
+              ))}
             </motion.div>
 
             {/* Stats — glass cards */}
@@ -124,23 +111,22 @@ export default function History() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="grid grid-cols-3 gap-4 mt-8"
             >
-              {[
-                { icon: Calendar, value: '30+', label: 'лет истории' },
-                { icon: Globe, value: '5', label: 'стран' },
-                { icon: Heart, value: '∞', label: 'энергии' },
-              ].map(({ icon: Icon, value, label }, i) => (
-                <motion.div
-                  key={label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.6 + i * 0.1 }}
-                  className="text-center p-4 rounded-2xl glass-card shimmer group hover:border-white/25 transition-all duration-300"
-                >
-                  <Icon className="mx-auto text-brazil-yellow mb-2 group-hover:scale-110 transition-transform" size={24} />
-                  <div className="text-2xl font-heading font-black text-white">{value}</div>
-                  <div className="text-xs text-white/55 mt-0.5">{label}</div>
-                </motion.div>
-              ))}
+              {historyContent.stats.map((stat, i) => {
+                const Icon = statIcons[i % statIcons.length]
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ delay: 0.6 + i * 0.1 }}
+                    className="text-center p-4 rounded-2xl glass-card shimmer group hover:border-white/25 transition-all duration-300"
+                  >
+                    <Icon className="mx-auto text-brazil-yellow mb-2 group-hover:scale-110 transition-transform" size={24} />
+                    <div className="text-2xl font-heading font-black text-white">{stat.value}</div>
+                    <div className="text-xs text-white/55 mt-0.5">{stat.label}</div>
+                  </motion.div>
+                )
+              })}
             </motion.div>
           </div>
 
@@ -154,9 +140,9 @@ export default function History() {
               {/* Inner glow top */}
               <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-              <h3 className="font-heading font-bold text-xl mb-6 text-center tracking-wide">Мы в мире</h3>
+              <h3 className="font-heading font-bold text-xl mb-6 text-center tracking-wide">{historyContent.countriesTitle}</h3>
               <div className="space-y-3">
-                {countries.map((country, i) => (
+                {historyContent.countries.map((country, i) => (
                   <motion.div
                     key={country.name}
                     initial={{ opacity: 0, x: 20 }}
@@ -190,10 +176,9 @@ export default function History() {
                 {/* Decorative quote mark */}
                 <div className="text-5xl leading-none text-brazil-green/30 font-serif mb-2">"</div>
                 <p className="text-white/55 text-sm italic leading-relaxed">
-                  Капоэйра — это мой способ выражать себя, моя жизнь,
-                  которую я проживаю каждый день.
+                  {historyContent.quote}
                 </p>
-                <p className="text-brazil-yellow text-sm font-semibold mt-3 tracking-wide">— Mestre Jair</p>
+                <p className="text-brazil-yellow text-sm font-semibold mt-3 tracking-wide">{historyContent.quoteAuthor}</p>
               </div>
             </div>
           </motion.div>
