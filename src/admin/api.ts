@@ -11,6 +11,9 @@ export type DataType =
   | 'forwhom'
   | 'school'
   | 'history'
+  | 'pricing'
+  | 'contacts'
+  | 'navbar'
 
 export interface LoadResult<T> {
   content: T

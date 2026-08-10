@@ -12,6 +12,9 @@ import { HeroEditor } from '../admin/editors/HeroEditor'
 import { ForWhomEditor } from '../admin/editors/ForWhomEditor'
 import { SchoolEditor } from '../admin/editors/SchoolEditor'
 import { HistoryEditor } from '../admin/editors/HistoryEditor'
+import { PricingEditor } from '../admin/editors/PricingEditor'
+import { ContactsEditor } from '../admin/editors/ContactsEditor'
+import { NavbarEditor } from '../admin/editors/NavbarEditor'
 import type { Master } from '../data/masters'
 import type { GalleryImage } from '../data/gallery'
 import type { Location, Direction, FAQItem } from '../data/locations'
@@ -19,8 +22,12 @@ import type { HeroContent } from '../data/hero'
 import type { ForWhomContent } from '../data/forwhom'
 import type { SchoolContent } from '../data/school'
 import type { HistoryContent } from '../data/history'
+import type { PricingContent } from '../data/pricing'
+import type { ContactsContent } from '../data/contacts'
+import type { NavbarContent } from '../data/navbar'
 
 const TABS: { key: DataType; label: string }[] = [
+  { key: 'navbar', label: 'Шапка' },
   { key: 'hero', label: 'Главный экран' },
   { key: 'content', label: 'О капоэйре' },
   { key: 'history', label: 'О школе' },
@@ -30,7 +37,9 @@ const TABS: { key: DataType; label: string }[] = [
   { key: 'gallery', label: 'Галерея' },
   { key: 'locations', label: 'Локации' },
   { key: 'directions', label: 'Направления' },
+  { key: 'pricing', label: 'Цены' },
   { key: 'faq', label: 'FAQ' },
+  { key: 'contacts', label: 'Контакты' },
 ]
 
 const PASS_KEY = 'fgr_admin_pass'
@@ -378,6 +387,12 @@ function ActiveEditor({
       return <SchoolEditor data={data as SchoolContent} onChange={onChange} />
     case 'history':
       return <HistoryEditor data={data as HistoryContent} onChange={onChange} />
+    case 'pricing':
+      return <PricingEditor data={data as PricingContent} onChange={onChange} />
+    case 'contacts':
+      return <ContactsEditor data={data as ContactsContent} onChange={onChange} />
+    case 'navbar':
+      return <NavbarEditor data={data as NavbarContent} onChange={onChange} />
     case 'masters':
       return <MastersEditor data={data as Master[]} onChange={onChange} password={password} />
     case 'gallery':

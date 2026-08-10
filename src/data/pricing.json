@@ -1,0 +1,20 @@
+{
+  "sectionTag": "Цены",
+  "titleMain": "Стоимость",
+  "titleHighlight": "занятий",
+  "planLabel": "Абонемент на месяц",
+  "price": "5000",
+  "currency": "₽",
+  "priceCaption": "безлимитные занятия",
+  "included": [
+    "Все тренировки в зале",
+    "Участие в Roda",
+    "Музыкальные занятия"
+  ],
+  "cta": "Записаться сейчас",
+  "benefits": [
+    { "iconName": "Gift", "label": "Пробное бесплатно", "sub": "Первое занятие" },
+    { "iconName": "Users", "label": "Семейные скидки", "sub": "Уточняйте" },
+    { "iconName": "CreditCard", "label": "Удобная оплата", "sub": "Наличные / Перевод" }
+  ]
+}

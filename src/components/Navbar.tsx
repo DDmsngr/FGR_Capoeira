@@ -3,17 +3,10 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Phone } from 'lucide-react'
 import { useScrollDirection } from '../hooks/useScrollDirection'
+import { navbarContent } from '../data/navbar'
+import { contactsContent, phoneLink } from '../data/contacts'
 
-const navLinks = [
-  { href: '#about', label: 'О капоэйре' },
-  { href: '#school', label: 'О школе' },
-  { href: '#for-whom', label: 'Для кого' },
-  { href: '#schedule', label: 'Расписание' },
-  { href: '#prices', label: 'Цены' },
-  { href: '#directions', label: 'Направления' },
-  { href: '#gallery', label: 'Галерея' },
-  { href: '#contact', label: 'Контакты' },
-]
+const navLinks = navbarContent.links
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -59,8 +52,8 @@ export default function Navbar() {
                   isAtTop ? 'text-white' : 'text-brazil-dark'
                 }`}
               >
-                <span className="block leading-tight text-sm whitespace-nowrap">Familia Ginga e Raça</span>
-                <span className={`block leading-tight text-[10px] font-medium tracking-wide whitespace-nowrap ${isAtTop ? 'text-white/60' : 'text-gray-400'}`}>Санкт-Петербург</span>
+                <span className="block leading-tight text-sm whitespace-nowrap">{contactsContent.brandName}</span>
+                <span className={`block leading-tight text-[10px] font-medium tracking-wide whitespace-nowrap ${isAtTop ? 'text-white/60' : 'text-gray-400'}`}>{contactsContent.brandTagline}</span>
               </div>
             </a>
 
@@ -90,7 +83,7 @@ export default function Navbar() {
             {/* CTA + Hamburger */}
             <div className="flex items-center gap-3">
               <a
-                href="tel:+79119440479"
+                href={phoneLink}
                 className={`hidden lg:flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105 whitespace-nowrap ${
                   isAtTop
                     ? 'text-white border border-white/30 hover:bg-white/10'
@@ -98,10 +91,10 @@ export default function Navbar() {
                 }`}
               >
                 <Phone size={14} />
-                +7 911 944-04-79
+                {contactsContent.phone}
               </a>
               <a href="#contact" className="hidden md:inline-flex btn-primary !py-2 !px-5 !text-sm">
-                Записаться
+                {navbarContent.ctaLabel}
               </a>
               <button
                 onClick={() => setIsOpen(!isOpen)}
@@ -142,7 +135,7 @@ export default function Navbar() {
               {/* Logo in mobile menu */}
               <div className="flex items-center gap-3 px-4 mb-4 pb-4 border-b border-gray-100">
                 <img src={getAsset("logo.png")} alt="FGR" className="w-10 h-10 object-contain" />
-                <span className="font-heading font-bold text-sm text-brazil-dark">Familia Ginga e Raça</span>
+                <span className="font-heading font-bold text-sm text-brazil-dark">{contactsContent.brandName}</span>
               </div>
               <div className="flex flex-col gap-1">
                 {navLinks.map((link, i) => (
@@ -157,11 +150,11 @@ export default function Navbar() {
               </div>
               <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="mt-8 space-y-3">
                 <a href="#contact" onClick={() => setIsOpen(false)} className="btn-primary w-full text-center">
-                  Записаться
+                  {navbarContent.ctaLabel}
                 </a>
-                <a href="tel:+79119440479" className="flex items-center justify-center gap-2 w-full px-6 py-3 rounded-full border-2 border-brazil-green text-brazil-green font-semibold hover:bg-brazil-green hover:text-white transition-colors">
+                <a href={phoneLink} className="flex items-center justify-center gap-2 w-full px-6 py-3 rounded-full border-2 border-brazil-green text-brazil-green font-semibold hover:bg-brazil-green hover:text-white transition-colors">
                   <Phone size={18} />
-                  +7 911 944-04-79
+                  {contactsContent.phone}
                 </a>
               </motion.div>
             </motion.nav>

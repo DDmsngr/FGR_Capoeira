@@ -1,6 +1,7 @@
 import { getAsset } from '../utils/assets'
 import { Heart, ArrowUp, Phone, MessageCircle, ExternalLink, Shield } from 'lucide-react'
 import { useState } from 'react'
+import { contactsContent, whatsappLink, phoneLink } from '../data/contacts'
 import PrivacyPolicyModal from './PrivacyPolicyModal'
 
 export default function Footer() {
@@ -21,12 +22,12 @@ export default function Footer() {
                 className="w-14 h-14 object-contain"
               />
               <div>
-                <div className="font-heading font-bold text-lg">Familia Ginga e Raça</div>
-                <div className="text-sm text-white/50">Капоэйра в Санкт-Петербурге</div>
+                <div className="font-heading font-bold text-lg">{contactsContent.brandName}</div>
+                <div className="text-sm text-white/50">{contactsContent.brandTagline}</div>
               </div>
             </div>
             <p className="text-white/60 text-sm max-w-md leading-relaxed">
-              Международная школа капоэйры. 30+ лет опыта. Бразилия, Россия, Ангола, Казахстан, Турция.
+              {contactsContent.shortDescription}
             </p>
           </div>
 
@@ -59,25 +60,25 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3 text-sm">
               <li>
-                <a href="tel:+79119440479" className="flex items-center gap-2 text-white/60 hover:text-brazil-yellow transition-colors">
+                <a href={phoneLink} className="flex items-center gap-2 text-white/60 hover:text-brazil-yellow transition-colors">
                   <Phone size={14} />
-                  +7 (911) 944-04-79
+                  {contactsContent.phone}
                 </a>
               </li>
               <li>
-                <a href="https://wa.me/79110133710" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-brazil-yellow transition-colors">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-brazil-yellow transition-colors">
                   <MessageCircle size={14} />
                   WhatsApp
                 </a>
               </li>
               <li>
-                <a href="https://vk.link/fgrcapoeira_spb" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-brazil-yellow transition-colors">
+                <a href={contactsContent.vkUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-brazil-yellow transition-colors">
                   <ExternalLink size={14} />
                   ВКонтакте
                 </a>
               </li>
               <li>
-                <a href="https://instagram.com/fgrcapoeira_spb" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-brazil-yellow transition-colors">
+                <a href={contactsContent.instagramUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-brazil-yellow transition-colors">
                   <ExternalLink size={14} />
                   Instagram
                 </a>
@@ -90,7 +91,7 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <p className="text-sm text-white/40 flex items-center gap-1.5">
-              © {new Date().getFullYear()} Familia Ginga e Raça. Сделано с
+              © {new Date().getFullYear()} {contactsContent.brandName}. Сделано с
               <Heart size={14} className="text-red-500 fill-red-500" />
               в СПб
             </p>

@@ -1,19 +1,14 @@
 import { getAsset } from '../utils/assets'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Check, Gift, Users, CreditCard, ArrowRight } from 'lucide-react'
+import { Check, Gift, Users, CreditCard, ArrowRight, Star, Heart, Zap, Trophy, Shield } from 'lucide-react'
+import { pricingContent } from '../data/pricing'
 
-const included = [
-  'Все тренировки в зале',
-  'Участие в Roda',
-  'Музыкальные занятия',
-]
+const ICONS = {
+  Gift, Users, CreditCard, Star, Heart, Check, Zap, Trophy, Shield,
+} as const
 
-const benefits = [
-  { icon: Gift,       label: 'Пробное бесплатно', sub: 'Первое занятие' },
-  { icon: Users,      label: 'Семейные скидки',   sub: 'Уточняйте' },
-  { icon: CreditCard, label: 'Удобная оплата',     sub: 'Наличные / Перевод' },
-]
+type IconName = keyof typeof ICONS
 
 export default function Pricing() {
   const ref = useRef(null)
@@ -29,10 +24,10 @@ export default function Pricing() {
           className="text-center mb-12"
         >
           <span className="inline-block px-4 py-1.5 bg-brazil-green/10 text-brazil-green text-sm font-semibold rounded-full mb-4">
-            Цены
+            {pricingContent.sectionTag}
           </span>
           <h2 className="font-heading font-black text-3xl sm:text-4xl md:text-5xl text-brazil-dark">
-            Стоимость <span className="gradient-text">занятий</span>
+            {pricingContent.titleMain} <span className="gradient-text">{pricingContent.titleHighlight}</span>
           </h2>
         </motion.div>
 
@@ -45,7 +40,6 @@ export default function Pricing() {
           >
             <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
-            {/* Logo watermark */}
             <img
               src={getAsset("logo.png")}
               alt=""
@@ -55,17 +49,17 @@ export default function Pricing() {
 
             <div className="relative">
               <div className="text-center mb-8">
-                <p className="text-white/80 text-sm font-medium mb-2">Абонемент на месяц</p>
+                <p className="text-white/80 text-sm font-medium mb-2">{pricingContent.planLabel}</p>
                 <div className="flex items-baseline justify-center gap-1">
-                  <span className="text-5xl md:text-6xl font-heading font-black">5000</span>
-                  <span className="text-2xl font-heading font-bold">₽</span>
+                  <span className="text-5xl md:text-6xl font-heading font-black">{pricingContent.price}</span>
+                  <span className="text-2xl font-heading font-bold">{pricingContent.currency}</span>
                 </div>
-                <p className="text-white/60 text-sm mt-2">безлимитные занятия</p>
+                <p className="text-white/60 text-sm mt-2">{pricingContent.priceCaption}</p>
               </div>
 
               <div className="space-y-3 mb-8">
-                {included.map((item) => (
-                  <div key={item} className="flex items-center gap-3">
+                {pricingContent.included.map((item, i) => (
+                  <div key={i} className="flex items-center gap-3">
                     <div className="w-5 h-5 bg-brazil-yellow rounded-full flex items-center justify-center shrink-0">
                       <Check size={12} className="text-brazil-dark" strokeWidth={3} />
                     </div>
@@ -78,7 +72,7 @@ export default function Pricing() {
                 href="#contact"
                 className="flex items-center justify-center gap-2 w-full py-4 bg-brazil-yellow text-brazil-dark font-bold text-lg rounded-full hover:bg-brazil-gold hover:scale-105 transition-all duration-300 shadow-lg"
               >
-                Записаться сейчас
+                {pricingContent.cta}
                 <ArrowRight size={20} />
               </a>
             </div>
@@ -90,13 +84,16 @@ export default function Pricing() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="grid sm:grid-cols-3 gap-4 mt-8"
           >
-            {benefits.map(({ icon: Icon, label, sub }) => (
-              <div key={label} className="text-center p-4 bg-gray-50 rounded-2xl">
-                <Icon className="mx-auto text-brazil-green mb-2" size={28} />
-                <p className="text-sm font-semibold text-brazil-dark">{label}</p>
-                <p className="text-xs text-gray-500 mt-1">{sub}</p>
-              </div>
-            ))}
+            {pricingContent.benefits.map((b, i) => {
+              const Icon = ICONS[b.iconName as IconName] ?? Star
+              return (
+                <div key={i} className="text-center p-4 bg-gray-50 rounded-2xl">
+                  <Icon className="mx-auto text-brazil-green mb-2" size={28} />
+                  <p className="text-sm font-semibold text-brazil-dark">{b.label}</p>
+                  <p className="text-xs text-gray-500 mt-1">{b.sub}</p>
+                </div>
+              )
+            })}
           </motion.div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Phone, MessageCircle, Instagram, Send, MapPin, CheckCircle, ExternalLink, Shield } from 'lucide-react'
 import { locations } from '../data/locations'
+import { contactsContent, whatsappLink, phoneLink } from '../data/contacts'
 import PrivacyPolicyModal from './PrivacyPolicyModal'
 
 const formSchema = z.object({
@@ -201,7 +202,7 @@ export default function Contact() {
           >
             <div className="space-y-3">
               <a
-                href="https://wa.me/79110133710?text=Здравствуйте!%20Хочу%20записаться%20на%20пробное%20занятие%20по%20капоэйре"
+                href={whatsappLink}
                 target="_blank" rel="noopener noreferrer"
                 className="btn-whatsapp w-full justify-center gap-3"
               >
@@ -209,11 +210,11 @@ export default function Contact() {
                 Написать в WhatsApp
               </a>
               <a
-                href="tel:+79119440479"
+                href={phoneLink}
                 className="flex items-center justify-center gap-3 w-full px-8 py-4 bg-brazil-green text-white font-bold text-lg rounded-full hover:bg-brazil-green-dark hover:scale-105 transition-all duration-300 shadow-lg"
               >
                 <Phone size={20} />
-                +7 (911) 944-04-79
+                {contactsContent.phone}
               </a>
             </div>
 
@@ -222,18 +223,18 @@ export default function Contact() {
               <h3 className="font-heading font-bold text-lg text-brazil-dark mb-4">Мы в соцсетях</h3>
               <div className="space-y-3">
                 <a
-                  href="https://vk.link/fgrcapoeira_spb" target="_blank" rel="noopener noreferrer"
+                  href={contactsContent.vkUrl} target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 transition-colors group"
                 >
                   <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-sm shrink-0">VK</div>
                   <div>
                     <div className="font-medium text-gray-700 group-hover:text-blue-600">ВКонтакте</div>
-                    <div className="text-xs text-gray-400">Наше сообщество</div>
+                    <div className="text-xs text-gray-400">{contactsContent.vkLabel}</div>
                   </div>
                   <ExternalLink size={14} className="ml-auto text-gray-300 group-hover:text-blue-400" />
                 </a>
                 <a
-                  href="https://instagram.com/fgrcapoeira_spb" target="_blank" rel="noopener noreferrer"
+                  href={contactsContent.instagramUrl} target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-3 p-3 rounded-xl hover:bg-pink-50 transition-colors group"
                 >
                   <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center text-white shrink-0">
@@ -241,7 +242,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <div className="font-medium text-gray-700 group-hover:text-pink-600">Instagram</div>
-                    <div className="text-xs text-gray-400">@fgrcapoeira_spb</div>
+                    <div className="text-xs text-gray-400">{contactsContent.instagramHandle}</div>
                   </div>
                   <ExternalLink size={14} className="ml-auto text-gray-300 group-hover:text-pink-400" />
                 </a>

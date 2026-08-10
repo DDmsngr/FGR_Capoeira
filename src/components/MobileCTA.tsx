@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, CalendarCheck } from 'lucide-react'
+import { whatsappLink } from '../data/contacts'
 
 export default function MobileCTA() {
   const [isVisible, setIsVisible] = useState(false)
@@ -30,7 +31,7 @@ export default function MobileCTA() {
               Записаться
             </a>
             <a
-              href="https://wa.me/79110133710?text=Здравствуйте!%20Хочу%20записаться%20на%20пробное%20занятие"
+              href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 px-5 py-3 bg-green-500 text-white font-bold rounded-full hover:bg-green-600 transition-colors text-sm"

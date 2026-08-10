@@ -24,6 +24,9 @@ const DATA_PATHS: Record<string, string> = {
   forwhom: 'src/data/forwhom.json',
   school: 'src/data/school.json',
   history: 'src/data/history.json',
+  pricing: 'src/data/pricing.json',
+  contacts: 'src/data/contacts.json',
+  navbar: 'src/data/navbar.json',
 }
 
 export default {
