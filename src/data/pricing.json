@@ -3,7 +3,7 @@
   "titleMain": "Стоимость",
   "titleHighlight": "занятий",
   "planLabel": "Абонемент на месяц",
-  "price": "5000",
+  "price": "50 000",
   "currency": "₽",
   "priceCaption": "безлимитные занятия",
   "included": [
@@ -13,8 +13,20 @@
   ],
   "cta": "Записаться сейчас",
   "benefits": [
-    { "iconName": "Gift", "label": "Пробное бесплатно", "sub": "Первое занятие" },
-    { "iconName": "Users", "label": "Семейные скидки", "sub": "Уточняйте" },
-    { "iconName": "CreditCard", "label": "Удобная оплата", "sub": "Наличные / Перевод" }
+    {
+      "iconName": "Gift",
+      "label": "Пробное бесплатно",
+      "sub": "Первое занятие"
+    },
+    {
+      "iconName": "Users",
+      "label": "Семейные скидки",
+      "sub": "Уточняйте"
+    },
+    {
+      "iconName": "CreditCard",
+      "label": "Удобная оплата",
+      "sub": "Наличные / Перевод"
+    }
   ]
 }
