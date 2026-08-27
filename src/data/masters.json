@@ -9,6 +9,15 @@
     "photo": ""
   },
   {
+    "name": "Mestre Jacare",
+    "rank": "Мастер",
+    "years": "",
+    "origin": "Сан-Паулу",
+    "bio": "",
+    "rankColor": "#009C3B",
+    "photo": ""
+  },
+  {
     "name": "Mestre Jair",
     "rank": "Мастер",
     "years": "40+ лет практики",
@@ -27,15 +36,6 @@
     "photo": ""
   },
   {
-    "name": "Mestre Oreia",
-    "rank": "Мастер",
-    "years": "",
-    "origin": "Сан-Паулу",
-    "bio": "",
-    "rankColor": "#009C3B",
-    "photo": ""
-  },
-  {
     "name": "Mestre Pepeu",
     "rank": "Мастер",
     "years": "",
@@ -45,7 +45,7 @@
     "photo": ""
   },
   {
-    "name": "Mestre Jacare",
+    "name": "Mestre Oreia",
     "rank": "Мастер",
     "years": "",
     "origin": "Сан-Паулу",
