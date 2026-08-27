@@ -1,5 +1,14 @@
 [
   {
+    "name": "Mestre Guilhermão",
+    "rank": "Мастер",
+    "years": "",
+    "origin": "Сан-Паулу",
+    "bio": "",
+    "rankColor": "#009C3B",
+    "photo": ""
+  },
+  {
     "name": "Mestre Jair",
     "rank": "Мастер",
     "years": "40+ лет практики",
@@ -27,19 +36,19 @@
     "photo": ""
   },
   {
-    "name": "Mestre Guilhermão",
+    "name": "Mestre Pepeu",
     "rank": "Мастер",
     "years": "",
-    "origin": "Сан-Паулу",
+    "origin": "Москва, Россия",
     "bio": "",
     "rankColor": "#009C3B",
     "photo": ""
   },
   {
-    "name": "Mestre Pepeu",
+    "name": "Mestre Jacare",
     "rank": "Мастер",
     "years": "",
-    "origin": "Москва, Россия",
+    "origin": "Сан-Паулу",
     "bio": "",
     "rankColor": "#009C3B",
     "photo": ""
